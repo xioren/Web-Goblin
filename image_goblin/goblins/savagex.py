@@ -25,12 +25,12 @@ class SavageXGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'cdn.savagex' in target:
                 urls.extend([self.parser.regex_sub(r'\d-\d+x\d+', f'{n}-1600x1600', target) for n in range(1, 7)])
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 init_response = self.get(target, store_cookies=True)
                 self.set_cookies()
                 # QUESTION: does this change? can storedomain be extracted from req url?

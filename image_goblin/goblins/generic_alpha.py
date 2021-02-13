@@ -42,8 +42,6 @@ class AlphaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
 
             if 'media/catalog' in target:
                 if not self.ACCEPT_IMAGE:
@@ -54,6 +52,9 @@ class AlphaGoblin(MetaGoblin):
                 if not self.ACCEPT_WEBPAGE:
                     self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)
                 else:
+                    self.logger.log(2, self.NAME, 'looting', target)
+                    self.logger.spin()
+                    
                     urls.extend(self.generate_urls(target, False))
 
             self.delay()

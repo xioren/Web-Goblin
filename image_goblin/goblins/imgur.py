@@ -36,44 +36,47 @@ class ImgurGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'i.imgur' in target or 'm.imgur' in target:
                 urls.append(target)
-            elif '/r/' in target:
-                matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
-                                                       r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
-                for match in matches:
-                    items = self.parser.load_json(match)
-                    urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
             else:
-                matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
-                                                       r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
-                for match in matches:
-                    items = self.parser.load_json(match)
-                    if items['is_album'] == True:
-                        for item in items['album_images']['images']:
-                            urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
-                    else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
+                if '/r/' in target:
+
+                    matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
+                                                           r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
+                    for match in matches:
+                        items = self.parser.load_json(match)
                         urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
-
-                if not urls: # sign in probably required -> try bypass
-                    self.logger.log(1, self.NAME, 'bypassing sign in gate')
-
-                    if '/a/' in target:
-                        matches = self.parser.extract_by_regex(self.get(f'{self.trim(target)}/embed').content,
-                                                               r'(?<=images\s{6}:\s){[^\n]+}(?=,\n)')
-                        for match in matches:
-                            items = self.parser.load_json(match)
-
-                            for item in items.get('images', ''):
+                else:
+                    matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
+                                                           r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
+                    for match in matches:
+                        items = self.parser.load_json(match)
+                        if items['is_album'] == True:
+                            for item in items['album_images']['images']:
                                 urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
-                    else:
-                        response = self.get(target)
-                        urls.append(self.parser.regex_search(r'og:image"\s+content="[^"\?]+', response.content).split('="')[-1])
-                        if 'og:video' in response.content:
-                            urls.append(self.parser.regex_search(r'og:video"\s+content="[^"\?]+', response.content).split('="')[-1])
+                        else:
+                            urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
+
+                    if not urls: # sign in probably required -> try bypass
+                        self.logger.log(1, self.NAME, 'bypassing sign in gate')
+
+                        if '/a/' in target:
+                            matches = self.parser.extract_by_regex(self.get(f'{self.trim(target)}/embed').content,
+                                                                   r'(?<=images\s{6}:\s){[^\n]+}(?=,\n)')
+                            for match in matches:
+                                items = self.parser.load_json(match)
+
+                                for item in items.get('images', ''):
+                                    urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
+                        else:
+                            response = self.get(target)
+                            urls.append(self.parser.regex_search(r'og:image"\s+content="[^"\?]+', response.content).split('="')[-1])
+                            if 'og:video' in response.content:
+                                urls.append(self.parser.regex_search(r'og:video"\s+content="[^"\?]+', response.content).split('="')[-1])
 
             self.delay()
 

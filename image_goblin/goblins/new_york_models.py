@@ -22,12 +22,12 @@ class NewYorkModelsGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'globaltalentsystems' in target:
                 urls.append(self.parser.regex_sub(r'\d+(?=/\d+_)', '1200', target))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 init_response = self.get(target).content
                 portfolio_id = self.parser.regex_search(r"(?<=var\sref\s=\s')[^']+", init_response)
 

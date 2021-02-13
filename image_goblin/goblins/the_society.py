@@ -27,15 +27,14 @@ class TheSocietyGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'media.thesocietymanagement' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(target.replace('.jpg', '_M.JPG'))
             else:
-                division, id = self.extract_info(target)
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
 
+                division, id = self.extract_info(target)
                 response = self.parser.load_json(self.get(f'{self.API_URL}/models/{division}/{id}').content)
 
                 for section in ('portfolio', 'pola'):

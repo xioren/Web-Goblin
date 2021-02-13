@@ -26,11 +26,11 @@ class IotaGoblin(MetaGoblin):
 
     def extract_id(self, url):
         '''extract image id from url'''
-        return self.parser.regex_search(r'\w+(_\w+)?(?=_\w+)', url)
+        return self.parser.regex_search(r'\w+(_\w+)?(?=_\w+)', self.parser.dequery(url))
 
     def extract_base(self, url):
         '''extract url base'''
-        return self.parser.regex_sub(r'(?<=/)[^/]+$', '', url)
+        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z]', '', self.parser.dequery(url)).rstrip('/')
 
     def extract_product(self, url):
         '''extract product from url'''
@@ -52,23 +52,24 @@ class IotaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
             target = target.replace('euimages.urbanoutfitters', 's7g10.scene7')
             if 'scene7' in target:
                 # NOTE: singapore uses different cdn
                 if 'i.localised' in target:
                     self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
-                id = self.extract_id(self.parser.dequery(target))
+                id = self.extract_id(target)
                 self.url_base = self.extract_base(target)
 
                 for mod in self.MODIFIERS:
-                    urls.append(f'{self.url_base}{id}{mod}{self.QUERY}')
+                    urls.append(f'{self.url_base}/{id}{mod}{self.QUERY}')
             else:
                 # FIXME: currently returns 403 forbidden on eu
                 if 'en-sg' in target or 'en-gb' in target:
                     self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)
                 else:
+                    self.logger.log(2, self.NAME, 'looting', target)
+                    self.logger.spin()
+                    
                     init_response = self.get(target, store_cookies=True)
                     if init_response.code == 200:
                         self.set_auth_tokens(self.parser.load_json(self.parser.unquote(self.cookie_value('urbn_auth_payload'))))

@@ -34,9 +34,6 @@ class MangoGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'mngbcn' in target:
                 t, id = self.extract_id(target)
 
@@ -44,6 +41,9 @@ class MangoGoblin(MetaGoblin):
                 for mod in self.MODIFIERS:
                     urls.append(f'{self.IMAGE_URL}/{t}/fotos/S20/{id}{mod}.jpg')
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 init_response = self.get(target, store_cookies=True)
                 self.set_cookies()
 

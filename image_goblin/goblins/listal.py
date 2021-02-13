@@ -29,9 +29,7 @@ class ListalGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'lisimg' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(target)
@@ -39,6 +37,9 @@ class ListalGoblin(MetaGoblin):
                 if 'viewimage' in target:
                     urls.append(f'{self.IMG_URL}/{self.extract_id(target)}/36800full.jpg')
                 else:
+                    self.logger.log(2, self.NAME, 'looting', target)
+                    self.logger.spin()
+                    
                     name = self.extract_name(target)
                     profile_url = f'{self.BASE_URL}/{name}'
                     ids = self.parser.extract_by_regex(self.get(f'{profile_url}/pictures').content, self.ID_PAT)

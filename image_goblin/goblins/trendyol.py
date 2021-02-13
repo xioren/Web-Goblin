@@ -31,9 +31,6 @@ class TrendyolGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'img-trendyol' in target or 'cdn.dsmcdn' in target:
                 url_base = self.extract_base(target)
                 ty_id = int(self.parser.regex_search(r'(?<=ty)\d+', target))
@@ -43,6 +40,9 @@ class TrendyolGoblin(MetaGoblin):
                     for j in range(1, 5):
                         urls.append(f'{new_base}{j}/{j}_org_zoom.jpg')
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 id = self.extract_id(target)
                 response = self.parser.load_json(self.get(f'{self.API_URL}/{id}').content)
 

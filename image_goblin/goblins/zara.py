@@ -28,15 +28,15 @@ class ZaraGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'static' in target:
                 url_base, url_end = self.parser.regex_split(r'_\d+_\d+_\d+', target)
 
                 for mod in self.MODIFIERS:
                     urls.append(f'{url_base}{mod}{self.SIZE}{self.trim(url_end)}')
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 urls.extend(self.parser.extract_by_regex(self.get(target).content, self.URL_PAT))
 
             self.delay()

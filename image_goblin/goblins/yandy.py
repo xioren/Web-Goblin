@@ -20,14 +20,14 @@ class YandyGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'assets.yandycdn' in target:
+                self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 parts = target.replace('https://', '').split('/')
                 urls.append(f'{parts[0]}/HiRez/{parts[2]}')
-                self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 product_id = self.parser.regex_search(r'(?<=data-product-id=")[^"]+', self.get(target).content)
                 response = self.parser.load_json(self.get(f'{self.API_URL}/products/{product_id}/images').content)
 

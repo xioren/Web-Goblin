@@ -17,9 +17,6 @@ class RedGifsGoblin(MetaGoblin):
         self.logger.log(1, self.NAME, 'collecting urls')
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'thcf' in target:
                 self.collect(target)
             else:

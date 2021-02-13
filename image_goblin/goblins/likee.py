@@ -20,14 +20,14 @@ class LikeeGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if '/s/' in target:
                 response = self.get(target).content
                 urls.append(self.parser.regex_search(r'(?<=video_url":")[^"]+', response))
                 # urls.append(self.parser.regex_search(r'(?<=thumbnailUrl":\[")[^"]+', response))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 last_postid = ''
                 init_response = self.get(self.parser.dequery(target)).content
                 uid = self.parser.regex_search(r'(?<="uid":")\d+', init_response)

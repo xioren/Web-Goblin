@@ -41,13 +41,13 @@ class SelectGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'gallery' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(target)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 model = self.extract_model(target)
                 location = self.extract_location(target)
                 # site_id = self.SITE_IDS[location]

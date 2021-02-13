@@ -28,13 +28,13 @@ class VictoriasSecretGoblin(MetaGoblin):
             DIMENSIONS = 'p/3040x4052'
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if '/p/' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(self.parser.regex_sub(r'p/\d+x\d+', DIMENSIONS, target.replace('dm.', 'www.')))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 init_response = self.get(target).content
                 api_version = self.parser.regex_search(r'(?<=:"products","version":")v\d+', init_response)
                 for path in self.parser.extract_by_regex(init_response, r'(?<="path":")page/[^"]+'):

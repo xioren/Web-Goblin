@@ -92,6 +92,7 @@ from goblins.par_femme import ParFemmeGoblin
 from goblins.perilla import PerillaGoblin
 from goblins.pinterest import PinterestGoblin
 from goblins.prettylittlething import PrettyLittleThingGoblin
+from goblins.princesse_tamtam import PrincesseTamTamGoblin
 from goblins.promise import PromiseGoblin
 from goblins.pull_and_bear import PullandBearGoblin
 from goblins.red_gifs import RedGifsGoblin
@@ -120,7 +121,6 @@ from goblins.the_society import TheSocietyGoblin
 from goblins.tisja_damen import TisjaDamenGoblin
 from goblins.tommy_hilfiger import TommyHilfigerGoblin
 from goblins.topshop import TopshopGoblin
-from goblins.tumblr import TumblrGoblin
 from goblins.trendyol import TrendyolGoblin
 from goblins.triangl import TrianglGoblin
 from goblins.underprotection import UnderprotectionGoblin
@@ -233,6 +233,7 @@ goblins = {
     'perilla': (r'perillalingerie\.[a-z]+', PerillaGoblin),
     'pinterest': (r'pin(terest|img)\.[a-z]+', PinterestGoblin),
     'prettylittlething': (r'prettylittlething\.[a-z]+', PrettyLittleThingGoblin),
+    'princessetamtam': (r'princessetamtam\.[a-z]+', PrincesseTamTamGoblin),
     'promise': ('tienda.promise', PromiseGoblin),
     'pullandbear': (r'pullandbear\.[a-z]+', PullandBearGoblin),
     'redgifs': (r'(gifdeliverynetwork|redgifs)\.[a-z]+', RedGifsGoblin),
@@ -263,7 +264,6 @@ goblins = {
     'topshop': (r'topshop\.[a-z]+', TopshopGoblin),
     'trendyol': (r'(trendyol|cdn\.dsmcdn)\.[a-z]+', TrendyolGoblin),
     'triangl': (r'triangl\.[a-z]+', TrianglGoblin),
-    'tumblr': (r'tumblr\.[a-z]+', TumblrGoblin),
     'underprotection': (r'underprotection\.[a-z]+', UnderprotectionGoblin),
     'urbanoutfitters': (r'urbanoutfitters(eu)?(\.[a-z]+|/)', UrbanOutfittersGoblin),
     'victoriassecret': (r'victoriassecret\.[a-z]+', VictoriasSecretGoblin),

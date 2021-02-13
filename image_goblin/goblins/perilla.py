@@ -1,6 +1,7 @@
 from meta import MetaGoblin
 
 # TODO: add shoplo backend
+# QUESTION: what happens when a single image is input?
 
 class PerillaGoblin(MetaGoblin):
     '''accepts:

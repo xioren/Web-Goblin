@@ -27,12 +27,12 @@ class WoodWoodGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'shared' in target:
                 urls.append(target)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 self.headers.update({'Cookie': 'queue=1589683924; bbc=104.149.68.66'})
                 urls.extend(self.parser.extract_by_regex(self.get(target).content, r'(?<="og:image" content=")[^"]+'))
 

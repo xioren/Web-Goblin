@@ -18,13 +18,13 @@ class BehanceGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'mir-s3-cdn' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(self.parser.regex_sub(r'(?<=modules/)[^/]+', 'source', target))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
                 self.headers.update({'X-Requested-With': 'XMLHttpRequest',
                                      'Cookie': 'ilo0=true'})
 

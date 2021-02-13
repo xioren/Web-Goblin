@@ -21,12 +21,12 @@ class VSCOGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-
             if 'aws.' in target or 'aws-' in target:
                 urls.append(self.parser.sanitize(target))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 init_response = self.get(target)
                 site_id = self.parser.regex_search(r'(?<="siteId":)\d+', init_response.content)
                 cursor = ''

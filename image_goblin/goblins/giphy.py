@@ -18,9 +18,6 @@ class GiphyGoblin(MetaGoblin):
         self.logger.log(1, self.NAME, 'collecting urls')
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'i.giphy' in target:
                 self.collect(target.replace('.webp', '.gif'), filename=target.split('/')[-2])
                 self.collect(target.replace('.webp', '.mp4').replace('.gif', '.mp4'), filename=target.split('/')[-2])

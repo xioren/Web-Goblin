@@ -27,15 +27,16 @@ class NellyGoblin(MetaGoblin):
         self.logger.log(1, self.NAME, 'collecting urls')
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             id = self.extract_id(target)
 
             for n in range(1, 6):
                 self.collect(f'{self.URL_BASE}/{id}_0{n}{self.QUERY}')
 
             if '/i/' not in target:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
                 response = self.get(target).content
                 video_url = self.parser.regex_search(r'https://[^"]+/mp4_product_high', response)
                 if video_url:

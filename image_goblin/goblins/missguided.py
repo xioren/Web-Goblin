@@ -24,12 +24,13 @@ class MissguidedGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'media.missguided' in target:
                 urls.append(target)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
                 # BUG: currently throws 405 error. requires cookie uuid values. unknown how they are generated.
                 self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)
 

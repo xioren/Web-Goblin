@@ -49,39 +49,40 @@ class PinterestGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'i.pinimg' in target:
                 urls.append(target)
-            elif '/pin/' in target:
-                path, _, slug = self.extract_info(target)
-
-                response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.PIN_RESOURCE_URL.format(path, slug))).content)
-                urls.append(response['resource_response']['data']['images']['736x']['url'])
             else:
-                path, username, slug = self.extract_info(target)
-                if slug:
-                    init_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOARD_RESOURCE_URL.format(path, username, slug))).content)
-                    board_id = init_response['resource_response']['data']['id']
-                    # pin_count = int(init_response['resource_response']['data']['pin_count'])
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
 
-                    media_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOARD_MEDIA_URL.format(path, board_id))).content)
-                    bookmark = media_response['resource_response'].get('bookmark')
-                    urls.extend(self.extract_urls(media_response))
+                if '/pin/' in target:
+                    path, _, slug = self.extract_info(target)
 
-                    if bookmark: # more images to load (page scroll)
-                        while True:
-                            media_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOOKMARKED_BOARD_MEDIA_URL.format(path, board_id, bookmark))).content)
-                            bookmark = media_response['resource_response'].get('bookmark')
-                            urls.extend(self.extract_urls(media_response))
-
-                            if not bookmark: # end of board
-                                break
-                            self.delay()
+                    response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.PIN_RESOURCE_URL.format(path, slug))).content)
+                    urls.append(response['resource_response']['data']['images']['736x']['url'])
                 else:
-                    # probably a profile url was entered
-                    self.logger.log(2, self.NAME, 'ERROR', 'board not found')
+                    path, username, slug = self.extract_info(target)
+                    if slug:
+                        init_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOARD_RESOURCE_URL.format(path, username, slug))).content)
+                        board_id = init_response['resource_response']['data']['id']
+                        # pin_count = int(init_response['resource_response']['data']['pin_count'])
+
+                        media_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOARD_MEDIA_URL.format(path, board_id))).content)
+                        bookmark = media_response['resource_response'].get('bookmark')
+                        urls.extend(self.extract_urls(media_response))
+
+                        if bookmark: # more images to load (page scroll)
+                            while True:
+                                media_response = self.parser.load_json(self.get('{}{}'.format(self.BASE_URL, self.BOOKMARKED_BOARD_MEDIA_URL.format(path, board_id, bookmark))).content)
+                                bookmark = media_response['resource_response'].get('bookmark')
+                                urls.extend(self.extract_urls(media_response))
+
+                                if not bookmark: # end of board
+                                    break
+                                self.delay()
+                    else:
+                        # probably a profile url was entered
+                        self.logger.log(2, self.NAME, 'ERROR', 'board not found')
 
             self.delay()
 

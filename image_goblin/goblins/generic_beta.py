@@ -38,13 +38,14 @@ class BetaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'scene7' in target:
                 urls.append(self.parser.dequery(target))
             else:
                 if self.ACCEPT_WEBPAGE:
+                    self.logger.log(2, self.NAME, 'looting', target)
+                    self.logger.spin()
+                    
                     urls.extend(self.parser.extract_by_regex(self.get(target).content, self.URL_PAT))
                 else:
                     self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)

@@ -33,13 +33,14 @@ class DeltaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
 
             if 'photos' in target:
                 for mod in self.MODIFIERS:
                     urls.append(self.trim(self.parser.regex_sub(r'_\d+_\d+_\d+', f'{mod}{self.SIZE}', target)))
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
                 response = self.parser.load_json(self.get(self.API_URL.format(self.extract_product_id(target))).content)
 
                 # QUESTION: is it always either or? is the else portion always present?

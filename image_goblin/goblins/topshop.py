@@ -29,13 +29,13 @@ class TopshopGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
             if 'images.topshop' in target:
                 for n in range(1, 6):
                     urls.append(f'{self.parser.dequery(target)[:-5]}{n}.jpg')
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+
                 path, brand_code = self.extract_info(target)
                 self.headers.update({'BRAND-CODE': brand_code})
 

@@ -47,8 +47,6 @@ class IteratorGoblin(MetaGoblin):
         '''main iteration method'''
         self.toggle_collecton_type() # convert collection to list so that urls are ordered
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
 
             base, iterable, end = self.isolate_parts(target)
             self.is_unique = self.unique(f'{base}{iterable}{end}', f'{base}{self.increment_iterable(iterable)}{end}')

@@ -23,13 +23,14 @@ class AdoreMeGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
-            
+
             if 'media-resize' in target:
                 urls.append(target)
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
                 slug = self.extract_slug(target)
                 response = self.parser.load_json(self.get(f'{self.API_URL}/{slug}').content)
 

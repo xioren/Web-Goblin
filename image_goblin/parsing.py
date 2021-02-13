@@ -21,7 +21,7 @@ class Parser:
         re.compile(r'[@\-_/\.]\d{2,}x(\d{2,})?(@\dx)?(?=\.|/)'), # 000x[000]
         re.compile(r'[@\-_/\.](\d{2,})?x\d{2,}(_crop)?(?=\.|/)'), # [000]x000
         re.compile(r'styles/\w+/public/'), # styles/xxxx_xxxx_xxxx_xxxx/public
-        re.compile(r'expanded_[a-z]+/'),
+        re.compile(r'expanded_[a-z_]+/'),
         re.compile(r'/v/\d/.+\.webp$'), # wix
         re.compile(r'-e\d+(?=\.)'), # (wordpress?) cropping
         re.compile(r'@\d+x')
@@ -238,7 +238,7 @@ class Parser:
             return True
         elif self.url_filter and not self.regex_search(self.url_filter, url, False):
             return True
-        elif 'data:image/' in url or 'facebook.com/tr' in url:
+        elif 'data:image/' in url or 'facebook.com/tr' in url or "+'" in url:
             return True
         return False
 

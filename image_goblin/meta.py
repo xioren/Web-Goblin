@@ -35,7 +35,7 @@ class MetaGoblin:
             self.path_main = os.path.join(os.getcwd(), 'goblin_loot', self.NAME.replace(' ', '_'))
 
         if self.args['mask']:
-            user_agent = 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'
+            user_agent = 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36'
         else:
             user_agent = f'ImageGoblin/{__version__}'
         self.headers = {'User-Agent': user_agent,

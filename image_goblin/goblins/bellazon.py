@@ -31,13 +31,14 @@ class BellazonGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            self.logger.log(2, self.NAME, 'looting', target)
-            self.logger.spin()
 
             if 'main/uploads' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
                 urls.append(target)
             else:
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
+                
                 thread_url = f'{self.BASE_URL}main/topic/{self.extract_topic(target)}'
                 response = self.get(thread_url)
                 pages = int(self.parser.regex_search(r'(?<="pageEnd":\s)\d', response.content))
