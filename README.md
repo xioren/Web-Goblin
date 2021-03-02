@@ -1,8 +1,7 @@
 # ImageGoblin
 
-#### changelog v0.5.7:
-+ goblin added
-+ tumblr removed
+#### changelog v0.5.8:
++ verbose logging improvements
 + bug fixes
 + misc code clean up and improvements
 

@@ -256,6 +256,8 @@ class MetaGoblin:
 
         with open(filepath, 'wb') as file:
             while True:
+                if self.args['verbose']:
+                    self.logger.progress(self.NAME, 'downloading', read, length)
                 chunk = response.read(DEFAULT_BUFFER_SIZE)
                 if not chunk:
                     break
@@ -341,7 +343,8 @@ class MetaGoblin:
             save_loc = self.path_main
 
         for item in self.collection:
-            self.logger.progress(self.NAME, 'looting', file, len(self.collection))
+            if not self.args['verbose']:
+                self.logger.progress(self.NAME, 'looting', file, len(self.collection))
 
             if timeout and failed >= timeout:
                 timed_out = True
@@ -365,7 +368,7 @@ class MetaGoblin:
             attempt = self.download(url, filepath)
             # FIXME: sites that always return data, such as html instead of 404 make iterator goblin run forever.
             if attempt:
-                self.logger.log(2, self.NAME, 'success', filename)
+                self.logger.log(2, self.NAME, 'success', filename, clear=True)
                 failed = 0
                 looted += 1
             else:

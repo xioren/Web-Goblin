@@ -14,6 +14,7 @@ class AgentProvocateurGoblin(MetaGoblin):
     ID = 'agentprovocateur'
     BASE_URL = 'https://www.agentprovocateur.com'
     API_URL = BASE_URL + '{}/api/n/bundle'
+    CATEGORY = r'_ecom_([a-z]+_)?'
 
     def __init__(self, args):
         super().__init__(args)
@@ -40,14 +41,19 @@ class AgentProvocateurGoblin(MetaGoblin):
 
             if 'media/catalog' in target:
                 base = self.isolate(target).split('_')[0]
-                zero = self.parser.regex_search(r'0(?=\d\.jpg)', target)
+                zero = self.parser.regex_search(r'(?<=_)0', target)
+                cat = self.parser.regex_search(self.CATEGORY, target)
+                alt = self.parser.regex_search(r'(?<=\d_)\d(?=\.)', target)
 
                 for n in range(1, 6):
-                    urls.append(f'{base}_ecom_{zero}{n}.jpg')
+                    if alt:
+                        urls.append(f'{base}{cat}{zero}{n}_{alt}.jpg')
+                    else:
+                        urls.append(f'{base}{cat}{zero}{n}.jpg')
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 location = self.extract_location(target)
                 self.headers.update({'Content-Type': 'application/json'})
                 POST_DATA = self.parser.make_json({"requests":[{"action":"route",

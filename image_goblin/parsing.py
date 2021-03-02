@@ -23,7 +23,7 @@ class Parser:
         re.compile(r'styles/\w+/public/'), # styles/xxxx_xxxx_xxxx_xxxx/public
         re.compile(r'expanded_[a-z_]+/'),
         re.compile(r'/v/\d/.+\.webp$'), # wix
-        re.compile(r'-e\d+(?=\.)'), # (wordpress?) cropping
+        re.compile(r'-(e\d+(?=\.)|scaled)'), # (wordpress?) cropping
         re.compile(r'@\d+x')
     )
 

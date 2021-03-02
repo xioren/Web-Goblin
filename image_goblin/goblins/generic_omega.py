@@ -19,7 +19,7 @@ class OmegaGoblin(MetaGoblin):
     def __init__(self, args):
         super().__init__(args)
         self.URL_PAT = self.parser.regex_pattern(fr'[^"\s\n\'\;,=]+?{self.FILETYPES}(\?[^"\s\n\'\|)]+)?', ignore=True)
-        self.IMG_PAT = self.parser.regex_pattern(f'(?:{self.FILETYPES}|/upload/|/images?/)', ignore=True) # QUESTION: too general?
+        self.IMG_PAT = self.parser.regex_pattern(f'(?:{self.FILETYPES}|/upload/|/images?/|/files?/)', ignore=True) # QUESTION: too general?
         self.ATTR_PAT = self.parser.regex_pattern(r'(?:src(?![a-z])|data(?![a-z\-])|data-(src(?!set)|lazy(?!-srcset)|url|original)' \
                                                   r'|content(?![a-z\-])|hires(?![a-z\-]))')
         self.TAG_PAT = self.parser.regex_pattern('(?:a(?![a-z])|ima?ge?|video|source|div)')
@@ -66,7 +66,7 @@ class OmegaGoblin(MetaGoblin):
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 if self.args['greedy']:
                     self.find_urls_greedy(target)
                 else:
