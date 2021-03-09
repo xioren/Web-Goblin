@@ -42,7 +42,6 @@ class MetaGoblin:
                         'Accept': '*/*',
                         'Accept-Encoding': 'gzip'}
 
-
         self.cookie_jar = CookieJar()
         self.logger = Logger(self.args['verbose'], self.args['silent'], self.args['nodl'])
         self.parser = Parser(self.args['targets'][self.ID][0], self.args['format'],
@@ -234,6 +233,7 @@ class MetaGoblin:
         ext = self.parser.extension(url)
         filename = self.parser.extract_filename(filepath, self.args['slugify'])
         length = int(response.info().get('Content-Length', -1))
+        readable_length = round(length/1000000, 2)
         read = 0
 
         if length >= 0 and length < self.MIN_SIZE:
@@ -257,7 +257,7 @@ class MetaGoblin:
         with open(filepath, 'wb') as file:
             while True:
                 if self.args['verbose']:
-                    self.logger.progress(self.NAME, 'downloading', read, length)
+                    self.logger.progress(self.NAME, 'downloading', round(read/1000000, 2), readable_length, 'MB')
                 chunk = response.read(DEFAULT_BUFFER_SIZE)
                 if not chunk:
                     break

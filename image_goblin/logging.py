@@ -40,12 +40,14 @@ class Logger:
                 if once:
                     self.logged.append(output)
 
-    def progress(self, caller, msg, current, total):
+    def progress(self, caller, msg, current, total, units=''):
         '''progress bar'''
         if not (self.silent or self.nodl):
             self.clear_line()
+            if units:
+                units = ' ' + units
             bar = '#' * floor(current/total * 20)
-            print(f'[{caller}] <{msg}> [{bar.ljust(20, " ")}] {current} of {total}', end='\r')
+            print(f'[{caller}] <{msg}> [{bar.ljust(20, " ")}] {current} of {total}{units}', end='\r')
 
     def spin(self):
         '''activity spinner'''

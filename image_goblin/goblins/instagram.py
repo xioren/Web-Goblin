@@ -62,8 +62,9 @@ class InstagramGoblin(MetaGoblin):
                 password = getpass(f'[{self.NAME}] password: ')
                 formatted_password = f"#PWD_INSTAGRAM_BROWSER:0:{int(time())}:{password}"
                 response = self.parser.load_json(self.post(self.LOGIN_URL,
-                                                            data={'username': username, 'enc_password': formatted_password},
-                                                            store_cookies=True).content)
+                                                           data={'username': username,
+                                                                 'enc_password': formatted_password},
+                                                           store_cookies=True).content)
                 self.set_cookies()
                 del username, password
 

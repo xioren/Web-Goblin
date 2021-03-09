@@ -24,16 +24,23 @@ class Parser:
         re.compile(r'expanded_[a-z_]+/'),
         re.compile(r'/v/\d/.+\.webp$'), # wix
         re.compile(r'-(e\d+(?=\.)|scaled)'), # (wordpress?) cropping
-        re.compile(r'@\d+x')
+        re.compile(r'@\d+x'),
+        re.compile(r'_rw_\d+') # myportfolio
     )
 
     def __init__(self, origin_url, user_formatting, ext_filter, filter):
         # NOTE: user input ext filters
         self.url_filter = re.compile(filter, flags=re.IGNORECASE)
-        self.ext_filter = [self.extension(f'null.{ext.lstrip(".")}') for ext in ext_filter.split(',')]
         self.origin_url = self.add_scheme(self.dequery(origin_url))
         self.ALPHA = ascii_letters + digits + '-_'
         self.user_formatting = user_formatting
+
+        self.ext_filter = [self.extension(f'null.{ext.lstrip(".")}') for ext in ext_filter.split(',')]
+        if 'null.jpg' in self.ext_filter and 'null.jpeg' not in self.ext_filter:
+            self.ext_filter.append('null.jpeg')
+        if 'null.jpeg' in self.ext_filter and 'null.jpg' not in self.ext_filter:
+            self.ext_filter.append('null.jpg')
+
         mimetypes.add_type('image/webp', '.webp')
 
 ####################################################################
@@ -163,7 +170,8 @@ class Parser:
         - expand relative urls
         - handle control characters
         '''
-        url = url.replace('\\', '')
+        # TODO: this is messy --> improve
+        url = url.replace('\\', '').rstrip(')').replace('url(', '')
         if re.search(self.ABSOLUTE_PAT, url): # absolute path
             url = self.add_scheme(url.lstrip('/'))
         else: # relative path
@@ -171,8 +179,7 @@ class Parser:
 
         for item in self.MISC_REPLACEMENTS:
             url = url.replace(item, self.MISC_REPLACEMENTS[item])
-
-        return self.make_url_safe(url.rstrip(')'))
+        return self.make_url_safe(url)
 
     def make_unique(self, path):
         '''make filepath unique'''
@@ -233,8 +240,6 @@ class Parser:
         if re.search(self.FILTER_PAT, url):
             return True
         elif self.ext_filter[0] and self.extension(url) not in self.ext_filter:
-            # TODO: auto handle jpg/jpeg (i.e. if user inputs filter jpg it
-            # should also catch jpeg and vice versa)
             return True
         elif self.url_filter and not self.regex_search(self.url_filter, url, False):
             return True

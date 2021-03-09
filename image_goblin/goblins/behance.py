@@ -34,9 +34,8 @@ class BehanceGoblin(MetaGoblin):
                         if 'components' in module:
                             for component in module['components']:
                                 urls.append(component['sizes']['source'])
-                        else:
-                            if 'sizes' in module:
-                                urls.append(module['sizes']['original'])
+                        elif 'sizes' in module:
+                            urls.append(module['sizes']['original'])
 
             self.delay()
 

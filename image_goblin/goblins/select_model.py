@@ -13,8 +13,8 @@ class SelectGoblin(MetaGoblin):
     NAME = 'select goblin'
     ID = 'select'
     # NOTE: old
-    # API_URL = 'https://selectmodel.com/graphql'
-    API_URL = 'https://cms-select.patr.onl/api/graphql.php'
+    API_URL = 'https://cms.selectmodel.com/api/graphql.php'
+    # API_URL = 'https://cms-select.patr.onl/api/graphql.php'
     # SITE_IDS = {'atlanta': '6',
     #             'chicago': '7',
     #             'london': '9',

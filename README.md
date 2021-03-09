@@ -1,9 +1,9 @@
 # ImageGoblin
 
-#### changelog v0.5.8:
-+ verbose logging improvements
+#### changelog v0.5.9:
++ more verbose logging improvements
 + bug fixes
-+ misc code clean up and improvements
++ miscellaneous code clean up and improvements
 
 ### This Program:
 + is a web scraping tool specifically for the discovery and retrieval of images on a web server, in the highest possible quality

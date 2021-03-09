@@ -64,14 +64,14 @@ class ThetaGoblin(MetaGoblin):
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 urls.extend(self.parser.extract_by_regex(self.get(target).content, self.URL_PAT))
 
             self.delay()
 
         for url in urls:
             url = url.replace('_small', '').replace('_grande', '')
-            # NOTE: collect both the url as is and the de-hashed url if hash is present
+            # NOTE: collect both the hashed alternate url and the de-hashed url if a hash is present
             self.collect(url, clean=True)
             self.collect(self.trim(url), clean=True)
 

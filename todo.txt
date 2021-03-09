@@ -1,8 +1,5 @@
 - add better exception handling for json key errors (ongoing)
-- more verbose logging and commenting
-- pixiv and danbooru?
 - decrop queries instead of removing all together
-- overwrite option
-- vk
 - rename various ids to common slug term
 - free stock image sites
+- proxy support

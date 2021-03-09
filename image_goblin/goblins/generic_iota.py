@@ -52,7 +52,7 @@ class IotaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            target = target.replace('euimages.urbanoutfitters', 's7g10.scene7')
+            target = self.parser.regex_sub('(eu)?images.urbanoutfitters', 's7g10.scene7', target)
             if 'scene7' in target:
                 # NOTE: singapore uses different cdn
                 if 'i.localised' in target:
@@ -69,7 +69,7 @@ class IotaGoblin(MetaGoblin):
                 else:
                     self.logger.log(2, self.NAME, 'looting', target)
                     self.logger.spin()
-                    
+
                     init_response = self.get(target, store_cookies=True)
                     if init_response.code == 200:
                         self.set_auth_tokens(self.parser.load_json(self.parser.unquote(self.cookie_value('urbn_auth_payload'))))
