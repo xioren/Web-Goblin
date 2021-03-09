@@ -52,7 +52,8 @@ class IotaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            target = self.parser.regex_sub('(eu)?images.urbanoutfitters', 's7g10.scene7', target)
+            target = self.parser.regex_sub(r'(eu)?images\.[a-z]+', 's7g10.scene7', target)
+
             if 'scene7' in target:
                 # NOTE: singapore uses different cdn
                 if 'i.localised' in target:

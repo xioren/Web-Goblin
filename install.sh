@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# unix only
+# *nix only
 # run this after placing the program in the desired location
 # pass u to uninstall
 
