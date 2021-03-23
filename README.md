@@ -11,7 +11,7 @@
 ### Requirements:
 + Python 3.6+
 
-### Operation:
+### Basic Operation:
 + *default*: will try to match the input url(s) to a specific goblin. the matched goblin(s) will download what images they can according to their rule sets, in the highest possible quality. if no goblin is matched a generic goblin is used. if a text file is used as input, the path of the text file should be input using the ```--local``` argument.
 
 	*examples:*
@@ -24,14 +24,15 @@
 	echo https://www.website.com/pages/somewebpage.html | xargs image-goblin --dir temp/images --silent
 	```
 
+### Mode Specific Operation:
 + *generic goblin:* for any site without a specific goblin. by default, this goblin will automatically try to remove common cropping. using the ```--format``` option overrides this functionality and instead formats according to user input modifier(s). the usage format for this is ```--format "mode modifier[ replacement]"```. ```"add modifier"``` will append the modifier to the end of the url; for example a query string. ```"sub modifier replacement"``` substitutes, while ```"rem modifier"``` removes. the modifier can be a regular string or regex pattern. the entire format argument needs to be quoted. using the ```--noup``` flag prevents any automatic manipulation of urls. you can also enforce greedy mode with ```--greedy```; sometimes this will find more images.
 
 	*examples:*
 
 	```python
-	image-goblin -f 'rem -\d+x\d+' https://website.com/pages/somewebpage.html
+	image-goblin -f "rem -\d+x\d+" https://website.com/pages/somewebpage.html
 
-	image-goblin --format 'sub size=\w+ size=large' https://website.com/uploadsimage_01.jpg?size=some_size
+	image-goblin --format "sub size=\w+ size=large" https://website.com/uploadsimage_01.jpg?size=some_size
 	```
 
 + *iterator goblin:* when provided a url, this goblin will try to download that file and all other file with the same url structure that are on the server (but not necessarily displayed on the website). the iterable needs to be surrounded by '#' on either side when input to be assigned to the iterator goblin and also indicate the portion of the url to be iterated. use the ```--step``` argument to set step size (default 1); negative values will iterate down. set ```--timeout 0``` to prevent timing out after n failed attempts.
