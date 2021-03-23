@@ -30,9 +30,9 @@ class MetaGoblin:
         if self.args['nosort']:
             self.path_main = os.getcwd()
         elif self.args['dir']:
-            self.path_main = os.path.join(os.getcwd(), self.args['dir'].replace(' ', '_'))
+            self.path_main = self.args['dir'].replace(' ', '_')
         else:
-            self.path_main = os.path.join(os.getcwd(), 'goblin_loot', self.NAME.replace(' ', '_'))
+            self.path_main = os.path.join('goblin_loot', self.NAME.replace(' ', '_'))
 
         if self.args['mask']:
             user_agent = 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36'

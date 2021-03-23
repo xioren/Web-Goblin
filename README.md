@@ -1,7 +1,6 @@
 # ImageGoblin
 
-#### changelog v0.5.10:
-+ minor changes
+#### changelog v0.6.0:
 + bug fixes
 + miscellaneous code clean up and improvements
 
@@ -13,11 +12,11 @@
 + Python 3.6+
 
 ### Operation:
-+ *default*: will try to match the input url(s) to a specific goblin. the matched goblin(s) will download what images they can according to their rule sets, in the highest possible quality. if no goblin is matched a generic goblin is used. if a text file is used as input, the relative path of the text file should be input using the ```--local``` argument.
++ *default*: will try to match the input url(s) to a specific goblin. the matched goblin(s) will download what images they can according to their rule sets, in the highest possible quality. if no goblin is matched a generic goblin is used. if a text file is used as input, the path of the text file should be input using the ```--local``` argument.
 
 	*examples:*
 
-	```
+	```python
 	image-goblin --verbose https://www.website.com/pages/somewebpage.html
 
 	image-goblin --local urls.txt --noskip
@@ -25,11 +24,11 @@
 	echo https://www.website.com/pages/somewebpage.html | xargs image-goblin --dir temp/images --silent
 	```
 
-+ *generic goblin:* for any site without a specific goblin. by default, this goblin will automatically try to remove common cropping. using the ```--format``` option overrides this functionality and instead formats according to user input modifier(s). the usage format for this is ```--format '_mode_ _modifier_[ _replacement_]'```. ```'add _modifier_'``` will append the modifier to the end of the url; for example a query string. ```'sub _modifier_ _replacement_'``` substitutes, while ```'rem _modifier_'``` removes. the modifier can be a regular string or regex pattern. the entire format argument needs to be quoted. using the ```--noup``` flag prevents any automatic manipulation of urls. you can also enforce greedy mode with ```--greedy```; sometimes this will find more images.
++ *generic goblin:* for any site without a specific goblin. by default, this goblin will automatically try to remove common cropping. using the ```--format``` option overrides this functionality and instead formats according to user input modifier(s). the usage format for this is ```--format "mode modifier[ replacement]"```. ```"add modifier"``` will append the modifier to the end of the url; for example a query string. ```"sub modifier replacement"``` substitutes, while ```"rem modifier"``` removes. the modifier can be a regular string or regex pattern. the entire format argument needs to be quoted. using the ```--noup``` flag prevents any automatic manipulation of urls. you can also enforce greedy mode with ```--greedy```; sometimes this will find more images.
 
 	*examples:*
 
-	```
+	```python
 	image-goblin -f 'rem -\d+x\d+' https://website.com/pages/somewebpage.html
 
 	image-goblin --format 'sub size=\w+ size=large' https://website.com/uploadsimage_01.jpg?size=some_size
@@ -39,7 +38,7 @@
 
 	*example:*
 
-	```
+	```python
 	image-goblin --timeout 10 --delay 3 https://website.com/uploads/image_#01#.jpg
 	```
 
@@ -62,7 +61,7 @@
 #### Misc:
 + this program has been tested on linux/windows/android.
 + the install script is optional and \*nix specific. it only serves to add a symlink to $HOME/.local/bin so that the program can be run from the shell with 'image-goblin' instead of 'python3 /path/to/image_goblin.py or ./image_goblin.py'.
-+ a specific goblin can be forced using ```--goblin _goblin_```.
++ a specific goblin can be forced using ```--goblin```.
 + a random delay (0<=n<=10) can be used with ```--delay -1```
 + the ```--format``` input needs to be exact so make sure modifiers/spaces have not been erroneously added or left out.
 + if little or no (relevant) images are found then the page is probably generated dynamically with javascript which the program does not handle. you can also try with the ```--noup``` and ```--greedy``` handles.

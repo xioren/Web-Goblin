@@ -3,3 +3,4 @@
 - rename various ids to common slug term
 - free stock image sites
 - proxy support
+- multi replace function

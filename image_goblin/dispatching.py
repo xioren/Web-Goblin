@@ -28,7 +28,7 @@ class Dispatcher:
                 print(key)
             return None
         elif self.args['local']:
-            local_path = os.path.join(os.getcwd(), self.args['local'])
+            local_path = self.args['local']
 
             if not os.path.exists(local_path):
                 self.logger.log(0, self.NAME, 'ERROR', f'local path not found: {local_path}')

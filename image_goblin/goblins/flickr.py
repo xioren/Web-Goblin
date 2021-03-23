@@ -25,12 +25,12 @@ class FlickrGoblin(MetaGoblin):
 
         for target in self.args['targets'][self.ID]:
 
-            if 'staticflickr' in target:
+            if '.static' in target:
                 urls.append(target)
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 image_id = self.extract_id(target)
                 response = self.parser.load_json(self.get(self.API_URL.format(image_id)).content)
 

@@ -10,7 +10,7 @@ parser = ArgumentParser(usage='image-goblin [OPTIONS] [URL]')
 
 parser.add_argument('-d', '--delay', help='delay ("-1" for randomized delay), default: 0', type=float, default=0)
 
-parser.add_argument('--dir', help='specify name or relative path of the download directory. \
+parser.add_argument('--dir', help='specify name or path of the download directory. \
                                    the directory will be created if it does not exist', type=str, default='')
 
 parser.add_argument('--ext', help='specify which extension(s) to download jpg,png[,...]', type=str, default='')
@@ -31,7 +31,7 @@ parser.add_argument('--greedy', help='find urls based on regex instead of html t
 
 parser.add_argument('--list', help='list available goblins', action='store_true')
 
-parser.add_argument('-l', '--local', help='filename of local text file containing urls')
+parser.add_argument('-l', '--local', help='filename of a local text file containing urls')
 
 parser.add_argument('--login', help='log in (goblin dependant)', action='store_true')
 

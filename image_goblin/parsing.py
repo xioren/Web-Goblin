@@ -11,7 +11,8 @@ class Parser:
     '''generic url/html/string parsing and manipulation utilities'''
 
     QUALITY_PAT = re.compile(r'q((ua)?li?ty)?=\d+')
-    FILTER_PAT = re.compile(r'(?:\.(js|css|pdf|php|html|svg(\+xml)?)|favicon|[{}])', flags=re.IGNORECASE)
+    FILTER_PAT = re.compile(r'(?:\.(js|css|pdf|php|html|svg(\+xml)?)|favicon|[{}])|\'\s?\+' \
+                            r'|data\:image/|facebook\.com/tr', flags=re.IGNORECASE)
     MISC_REPLACEMENTS = {'amp;': '', 'background-image:url(': ''}
     ABSOLUTE_PAT = r'(?:/?[^/\.]+\.[^/]+(?=/))'
     SCALING_PATS = (
@@ -242,8 +243,6 @@ class Parser:
         elif self.ext_filter[0] and self.extension(url) not in self.ext_filter:
             return True
         elif self.url_filter and not self.regex_search(self.url_filter, url, False):
-            return True
-        elif 'data:image/' in url or 'facebook.com/tr' in url or "+'" in url:
             return True
         return False
 
