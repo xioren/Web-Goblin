@@ -4,3 +4,4 @@
 - free stock image sites
 - proxy support
 - multi replace function
+- pre-compile all regex patterns?

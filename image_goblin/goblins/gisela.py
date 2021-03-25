@@ -35,7 +35,7 @@ class GiselaGoblin(MetaGoblin):
                 self.headers.update({'Accept': 'application/json, text/javascript, */*',
                                      'Origin': 'https://www.gisela.com'})
 
-                response = self.parser.load_json(self.get(f'{self.API_URL}/{slug}.html?category={slug}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/{slug}.html?category={slug}').content)
 
                 if 'model' in response:
                     for image in response['model']['images']:

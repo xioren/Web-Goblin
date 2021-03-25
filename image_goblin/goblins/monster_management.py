@@ -25,10 +25,10 @@ class MonsterGoblin(MetaGoblin):
         for target in self.args['targets'][self.ID]:
             self.logger.log(2, self.NAME, 'looting', target)
             self.logger.spin()
-            
+
             model_id = self.extract_id(target)
 
-            response = self.parser.load_json(self.get(f'{self.API_URL}/{model_id}').content)
+            response = self.parser.from_json(self.get(f'{self.API_URL}/{model_id}').content)
 
             # NOTE: video book present in json but not used
             if 'ActiveBook' in response:

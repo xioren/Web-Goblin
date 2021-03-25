@@ -40,8 +40,8 @@ class DeltaGoblin(MetaGoblin):
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
-                response = self.parser.load_json(self.get(self.API_URL.format(self.extract_product_id(target))).content)
+
+                response = self.parser.from_json(self.get(self.API_URL.format(self.extract_product_id(target))).content)
 
                 # QUESTION: is it always either or? is the else portion always present?
                 if 'bundleProductSummaries' in response and response['bundleProductSummaries']:

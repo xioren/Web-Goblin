@@ -42,19 +42,19 @@ class ImgurGoblin(MetaGoblin):
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 if '/r/' in target:
 
                     matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
                                                            r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
                     for match in matches:
-                        items = self.parser.load_json(match)
+                        items = self.parser.from_json(match)
                         urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
                 else:
                     matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
                                                            r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
                     for match in matches:
-                        items = self.parser.load_json(match)
+                        items = self.parser.from_json(match)
                         if items['is_album'] == True:
                             for item in items['album_images']['images']:
                                 urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
@@ -68,7 +68,7 @@ class ImgurGoblin(MetaGoblin):
                             matches = self.parser.extract_by_regex(self.get(f'{self.trim(target)}/embed').content,
                                                                    r'(?<=images\s{6}:\s){[^\n]+}(?=,\n)')
                             for match in matches:
-                                items = self.parser.load_json(match)
+                                items = self.parser.from_json(match)
 
                                 for item in items.get('images', ''):
                                     urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')

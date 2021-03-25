@@ -30,7 +30,7 @@ class IotaGoblin(MetaGoblin):
 
     def extract_base(self, url):
         '''extract url base'''
-        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z]', '', self.parser.dequery(url)).rstrip('/')
+        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z](\.[a-z\d]+)', '', self.parser.dequery(url)).rstrip('/')
 
     def extract_product(self, url):
         '''extract product from url'''
@@ -43,7 +43,7 @@ class IotaGoblin(MetaGoblin):
 
     def reauthorize(self):
         '''get new auth and reauth tokens'''
-        auth_tokens = self.parser.load_json(self.post(self.AUTH_API_URL, data={"reauthToken": self.reauth_token}).content)
+        auth_tokens = self.parser.from_json(self.post(self.AUTH_API_URL, data={"reauthToken": self.reauth_token}).content)
         self.set_auth_tokens(auth_tokens)
         self.headers.update({'authorization': f'Bearer {self.auth_token}'})
 
@@ -65,6 +65,7 @@ class IotaGoblin(MetaGoblin):
                     urls.append(f'{self.url_base}/{id}{mod}{self.QUERY}')
             else:
                 # FIXME: currently returns 403 forbidden on eu
+                # QUESTION: scaling problem?
                 if 'en-sg' in target or 'en-gb' in target:
                     self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)
                 else:
@@ -73,7 +74,7 @@ class IotaGoblin(MetaGoblin):
 
                     init_response = self.get(target, store_cookies=True)
                     if init_response.code == 200:
-                        self.set_auth_tokens(self.parser.load_json(self.parser.unquote(self.cookie_value('urbn_auth_payload'))))
+                        self.set_auth_tokens(self.parser.from_json(self.parser.unquote(self.cookie_value('urbn_auth_payload'))))
 
                         self.headers.update(
                             {
@@ -86,13 +87,13 @@ class IotaGoblin(MetaGoblin):
                             }
                         )
 
-                        response = self.parser.load_json(self.get(self.API_URL.format(self.extract_product(target))).content)
+                        response = self.parser.from_json(self.get(self.API_URL.format(self.extract_product(target))).content)
 
                         # QUESTION: isinstance checks necessary?
                         if isinstance(response, dict) and response.get('code') == 'EXPIRED_TOKEN':
                             self.logger.log(2, self.NAME, 'reauthorizing')
                             self.reauthorize()
-                            response = self.parser.load_json(self.get(self.API_URL.format(self.extract_product(target))).content)
+                            response = self.parser.from_json(self.get(self.API_URL.format(self.extract_product(target))).content)
 
                         if isinstance(response, list) and 'skuInfo' in response[0]:
                             for slice in response[0]['skuInfo']['primarySlice']['sliceItems']:

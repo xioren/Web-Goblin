@@ -1,10 +1,10 @@
 from meta import MetaGoblin
 
-# TODO: add site specific iteration and scannable flag
 
 class ThetaGoblin(MetaGoblin):
     '''handles: shopify
-    docs: https://help.shopify.com/en/manual/products/product-media
+    docs: https://shopify.dev/docs/themes/liquid/reference/filters/url-filters#img_url,
+          https://shopify.dev/docs/admin-api/rest/reference/products/product-image#index-2021-01
     accepts:
         - image*
         - webpage
@@ -43,14 +43,28 @@ class ThetaGoblin(MetaGoblin):
 
     NAME = 'theta goblin'
     ID = 'theta'
-    URL_PAT = r'cdn\.shopify\.com/s/files/[^"\s\n]+'
+    QUERY = 'https://{}/products/{}.js'
 
     def __init__(self, args):
         super().__init__(args)
+        self.HASH_PAT = self.parser.regex_pattern(r'_[a-z\d]+(\-[a-z\d]+){4}')
+        self.CROPPING_PAT = self.parser.regex_pattern(r'-/format/auto/-/preview/\d+x\d+/-/quality/[a-z]+/|_[a-z]+(?=\.)')
 
     def trim(self, url):
         '''remove variant hash'''
-        return self.parser.regex_sub(r'_[a-z\d]+(\-[a-z\d]+){4}', '', url)
+        return self.parser.regex_sub(self.HASH_PAT, '', url)
+
+    def decrop(self, url):
+        '''remove cropping'''
+        return self.parser.regex_sub(self.CROPPING_PAT, '', url)
+
+    def extract_vendor(self, url):
+        '''extract shopify vendor url'''
+        return self.parser.regex_search(r'(?<=://)?\w+(\.[a-z]+)+', url)
+
+    def extract_product(self, url):
+        '''extract shopify product tag'''
+        return self.parser.regex_search(r'(?<=products/)[\-\w]+', url)
 
     def main(self):
         self.logger.log(1, self.NAME, 'collecting urls')
@@ -58,21 +72,28 @@ class ThetaGoblin(MetaGoblin):
 
         for target in self.args['targets'][self.ID]:
 
-            if 'cdn.shopify' in target:
+            if 'cdn.shopify' in target or 'i.shgcdn' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
-                urls.append(target)
+                if 'i.shgcdn' in url:
+                    urls.append(self.decrop(target))
+                else:
+                    urls.append(target)
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
 
-                urls.extend(self.parser.extract_by_regex(self.get(target).content, self.URL_PAT))
+                vendor = self.extract_vendor(target)
+                product = self.extract_product(target)
+
+                response = self.parser.from_json(self.get(self.QUERY.format(vendor, product)).content)
+                urls.extend(response.get('images', ''))
 
             self.delay()
 
         for url in urls:
-            url = url.replace('_small', '').replace('_grande', '')
-            # NOTE: collect both the hashed alternate url and the de-hashed url if a hash is present
+            if self.parser.regex_search(self.HASH_PAT, target, capture=False):
+                # NOTE: collect de hashed alternate url if a hash is present
+                self.collect(self.trim(url), clean=True)
             self.collect(url, clean=True)
-            self.collect(self.trim(url), clean=True)
 
         self.loot()

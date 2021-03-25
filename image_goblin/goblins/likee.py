@@ -34,7 +34,7 @@ class LikeeGoblin(MetaGoblin):
 
                 while True:
                     self.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
-                    response = self.parser.load_json(self.post(self.API_URL, {'uid': uid, 'count': self.num_posts, 'lastPostId': last_postid}).content)
+                    response = self.parser.from_json(self.post(self.API_URL, {'uid': uid, 'count': self.num_posts, 'lastPostId': last_postid}).content)
                     if response['msg'] == 'success':
                         if not response['data']['videoList']:
                             break

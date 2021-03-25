@@ -35,7 +35,7 @@ class TheSocietyGoblin(MetaGoblin):
                 self.logger.spin()
 
                 division, id = self.extract_info(target)
-                response = self.parser.load_json(self.get(f'{self.API_URL}/models/{division}/{id}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/models/{division}/{id}').content)
 
                 for section in ('portfolio', 'pola'):
                     urls.extend(self.extract_images(response['books'][section]))

@@ -30,7 +30,7 @@ class MetaGoblin:
         if self.args['nosort']:
             self.path_main = os.getcwd()
         elif self.args['dir']:
-            self.path_main = self.args['dir'].replace(' ', '_')
+            self.path_main = self.args['dir']
         else:
             self.path_main = os.path.join('goblin_loot', self.NAME.replace(' ', '_'))
 
@@ -243,7 +243,7 @@ class MetaGoblin:
         filepath = self.check_ext(filepath, response.info().get('Content-Type'))
         if os.path.exists(filepath):
             if kwargs['attempt'] > 0:
-                # NOTE: remove files that timed out during initial read
+                # NOTE: remove incomplete files that timed out during initial read
                 # WARNING: possible to erroneously remove legit files with same filename
                 # FIXME: lazy approach
                 os.remove(filepath)

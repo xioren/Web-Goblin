@@ -47,13 +47,13 @@ class MangoGoblin(MetaGoblin):
                 init_response = self.get(target, store_cookies=True)
                 self.set_cookies()
 
-                stock_id = self.parser.load_json(self.get(self.STOCK_ID_URL).content)['key']
+                stock_id = self.parser.from_json(self.get(self.STOCK_ID_URL).content)['key']
                 self.headers.update({'stock-id': stock_id})
 
                 if 'outlet' in target:
-                    response = self.parser.load_json(self.get(f'{self.OUTLET_API_URL}/{self.extract_product(target)}').content)
+                    response = self.parser.from_json(self.get(f'{self.OUTLET_API_URL}/{self.extract_product(target)}').content)
                 else:
-                    response = self.parser.load_json(self.get(f'{self.MAIN_API_URL}/{self.extract_product(target)}').content)
+                    response = self.parser.from_json(self.get(f'{self.MAIN_API_URL}/{self.extract_product(target)}').content)
 
                 for color in response['colors']['colors']:
                     for images in color['images']:

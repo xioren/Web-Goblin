@@ -40,7 +40,7 @@ class SavageXGoblin(MetaGoblin):
                 auth = self.get(self.API_AUTH_URL, store_cookies=True)
                 self.set_cookies()
 
-                response = self.parser.load_json(self.get(f'{self.API_URL}/products/{self.product_id(target)}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/products/{self.product_id(target)}').content)
                 if response:
                     # BUG: doesnt return all images
                     urls.extend(response['image_view_list'])

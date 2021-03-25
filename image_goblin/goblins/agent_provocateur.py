@@ -56,10 +56,10 @@ class AgentProvocateurGoblin(MetaGoblin):
 
                 location = self.extract_location(target)
                 self.headers.update({'Content-Type': 'application/json'})
-                POST_DATA = self.parser.make_json({"requests":[{"action":"route",
+                POST_DATA = self.parser.to_json({"requests":[{"action":"route",
                                                                 "children":[{"path":f"/{self.extract_path(target)}",
                                                                              "_reqId":0}]}]})
-                response = self.parser.load_json(self.post(self.API_URL.format(location), data=POST_DATA).content)
+                response = self.parser.from_json(self.post(self.API_URL.format(location), data=POST_DATA).content)
 
                 for entry in response.get('catalog', ''):
                     for image in entry.get('media', ''):

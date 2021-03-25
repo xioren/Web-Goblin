@@ -32,7 +32,7 @@ class FlickrGoblin(MetaGoblin):
                 self.logger.spin()
 
                 image_id = self.extract_id(target)
-                response = self.parser.load_json(self.get(self.API_URL.format(image_id)).content)
+                response = self.parser.from_json(self.get(self.API_URL.format(image_id)).content)
 
                 if 'photo' in response:
                     urls.append(response['photo']['url_o'])

@@ -39,10 +39,10 @@ class TopshopGoblin(MetaGoblin):
                 path, brand_code = self.extract_info(target)
                 self.headers.update({'BRAND-CODE': brand_code})
 
-                response = self.parser.load_json(self.get(f'{self.API_URL}{quote_plus(f"/{path}")}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}{quote_plus(f"/{path}")}').content)
 
                 if 'permanentRedirectUrl' in response:
-                    response = self.parser.load_json(self.get(f'{self.API_URL}{quote_plus(response["permanentRedirectUrl"])}').content)
+                    response = self.parser.from_json(self.get(f'{self.API_URL}{quote_plus(response["permanentRedirectUrl"])}').content)
 
                 for asset in response.get('assets', ''):
                     if asset['assetType'] == 'IMAGE_LARGE':

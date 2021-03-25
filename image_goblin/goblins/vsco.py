@@ -33,7 +33,7 @@ class VSCOGoblin(MetaGoblin):
                 self.headers.update({'Authorization': 'Bearer 7356455548d0a1d886db010883388d08be84d0c9'})
 
                 while True:
-                    response = self.parser.load_json(self.get(self.API_URL.format(site_id, 100, urllib.parse.quote(cursor))).content)
+                    response = self.parser.from_json(self.get(self.API_URL.format(site_id, 100, urllib.parse.quote(cursor))).content)
 
                     for item in response.get('media', ''):
                         urls.append(item['image'].get('responsive_url', ''))

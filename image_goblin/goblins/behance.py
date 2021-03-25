@@ -28,7 +28,7 @@ class BehanceGoblin(MetaGoblin):
                 self.headers.update({'X-Requested-With': 'XMLHttpRequest',
                                      'Cookie': 'ilo0=true'})
 
-                response = self.parser.load_json(self.get(self.parser.dequery(target)).content)
+                response = self.parser.from_json(self.get(self.parser.dequery(target)).content)
                 if 'view' in response:
                     for module in response['view']['project']['modules']:
                         if 'components' in module:

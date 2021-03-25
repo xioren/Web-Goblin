@@ -29,7 +29,7 @@ class YandyGoblin(MetaGoblin):
                 self.logger.spin()
 
                 product_id = self.parser.regex_search(r'(?<=data-product-id=")[^"]+', self.get(target).content)
-                response = self.parser.load_json(self.get(f'{self.API_URL}/products/{product_id}/images').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/products/{product_id}/images').content)
 
                 for image in response['data']:
                     urls.append(image['hi_rez'])

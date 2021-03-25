@@ -39,7 +39,7 @@ class VictoriasSecretGoblin(MetaGoblin):
                 api_version = self.parser.regex_search(r'(?<={"version":")v\d+(?="}})', init_response)
 
                 for path in self.parser.extract_by_regex(init_response, r'(?<="path":")page/[^"]+'):
-                    response = self.parser.load_json(self.get(f'{self.API_URL_BASE}/products/{api_version}/{self.parser.dequery(path)}?activeCountry=US').content)
+                    response = self.parser.from_json(self.get(f'{self.API_URL_BASE}/products/{api_version}/{self.parser.dequery(path)}?activeCountry=US').content)
                     # QUESTION: can this be condensed?
                     if 'product' in response:
                         products = response['product'].get('productData', '')

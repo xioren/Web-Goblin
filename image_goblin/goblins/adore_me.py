@@ -30,9 +30,9 @@ class AdoreMeGoblin(MetaGoblin):
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
+
                 slug = self.extract_slug(target)
-                response = self.parser.load_json(self.get(f'{self.API_URL}/{slug}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/{slug}').content)
 
                 # NOTE: other colors are located in related products
 

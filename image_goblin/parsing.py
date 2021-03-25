@@ -246,8 +246,8 @@ class Parser:
             return True
         return False
 
-    def load_json(self, json_string):
-        '''load JSON safely and if necessary fix improper use of double quote delimiters (*cough* imgur)'''
+    def from_json(self, json_string):
+        '''convert JSON to a dictionary safely and if necessary fix improper use of double quote delimiters (*cough* imgur)'''
         if not json_string:
             return {}
         try:
@@ -262,7 +262,7 @@ class Parser:
             except json.JSONDecodeError:
                 return {}
 
-    def make_json(self, object):
+    def to_json(self, object):
         '''safely convert an object to json'''
         try:
             return json.dumps(object)

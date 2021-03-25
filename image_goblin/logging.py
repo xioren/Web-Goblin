@@ -2,6 +2,7 @@ from math import floor
 from itertools import cycle
 from os import get_terminal_size
 
+
 class Logger:
     '''Program Output'''
 
@@ -11,7 +12,7 @@ class Logger:
         self.nodl = nodl
         self.logged = [] # NOTE: keep track of log once logs
         self.spinner = cycle(['#-----', '-#----', '--#---', '---#--', '----#-',
-                                '-----#', '----#-', '---#--', '--#---', '-#----'])
+                              '-----#', '----#-', '---#--', '--#---', '-#----'])
 
     def clear_line(self):
         '''clear the current terminal line'''
@@ -44,10 +45,8 @@ class Logger:
         '''progress bar'''
         if not (self.silent or self.nodl):
             self.clear_line()
-            if units:
-                units = ' ' + units
             bar = '#' * floor(current/total * 20)
-            print(f'[{caller}] <{msg}> [{bar.ljust(20, " ")}] {current} of {total}{units}', end='\r')
+            print(f'[{caller}] <{msg}> [{bar.ljust(20, " ")}] {current} of {total} {units}', end='\r')
 
     def spin(self):
         '''activity spinner'''

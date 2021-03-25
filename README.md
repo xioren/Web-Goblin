@@ -1,6 +1,7 @@
 # ImageGoblin
 
-#### changelog v0.6.0:
+#### changelog v0.6.1:
++ shopify rework
 + bug fixes
 + miscellaneous code clean up and improvements
 
@@ -35,7 +36,7 @@
 	image-goblin --format "sub size=\w+ size=large" https://website.com/uploadsimage_01.jpg?size=some_size
 	```
 
-+ *iterator goblin:* when provided a url, this goblin will try to download that file and all other file with the same url structure that are on the server (but not necessarily displayed on the website). the iterable needs to be surrounded by '#' on either side when input to be assigned to the iterator goblin and also indicate the portion of the url to be iterated. use the ```--step``` argument to set step size (default 1); negative values will iterate down. set ```--timeout 0``` to prevent timing out after n failed attempts.
++ *iterator goblin:* when provided a url, this goblin will try to download that file and all other files with the same url structure that are on the server (but not necessarily displayed on the website). the iterable needs to be surrounded by '#' on either side when input to be assigned to the iterator goblin and also indicate the portion of the url to be iterated. use the ```--step``` argument to set step size (default 1); negative values will iterate down. set ```--timeout 0``` to prevent timing out after n failed attempts.
 
 	*example:*
 

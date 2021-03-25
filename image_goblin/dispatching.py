@@ -67,6 +67,6 @@ class Dispatcher:
                 goblin = goblins[key][1]
             except KeyError:
                 self.logger.log(0, self.NAME, 'ERROR', f'unkown goblin "{key}" ' \
-                                '-> use --list to see available goblins')
+                                                        '-> use --list to see available goblins')
                 continue
             goblin(self.args).main()

@@ -43,7 +43,7 @@ class MarilynGoblin(MetaGoblin):
                     if item == '0':
                         continue
 
-                    response = self.parser.load_json(self.get(f'{self.API_URL}/media/1/{model_id}/{item}').content)
+                    response = self.parser.from_json(self.get(f'{self.API_URL}/media/1/{model_id}/{item}').content)
                     for item in response:
                         urls.append(f'{self.IMAGE_URL}/{model_id}/{item.get("url", "")}')
 

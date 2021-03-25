@@ -44,7 +44,7 @@ class InstagramGoblin(MetaGoblin):
         if '/p/' in url:
             shortcode = url.rstrip('/').split('/')[-1]
             variables = f'{{"shortcode":"{shortcode}","include_reel":true}}'
-            response = self.parser.load_json(self.get(self.POST_URL.format(quote(variables, safe='"'))).content)
+            response = self.parser.from_json(self.get(self.POST_URL.format(quote(variables, safe='"'))).content)
             return response['data']['shortcode_media']['owner']['reel']['owner']['username']
         else:
             return url.rstrip('/').split('/')[-1]
@@ -61,7 +61,7 @@ class InstagramGoblin(MetaGoblin):
                 username = input(f'[{self.NAME}] username: ')
                 password = getpass(f'[{self.NAME}] password: ')
                 formatted_password = f"#PWD_INSTAGRAM_BROWSER:0:{int(time())}:{password}"
-                response = self.parser.load_json(self.post(self.LOGIN_URL,
+                response = self.parser.from_json(self.post(self.LOGIN_URL,
                                                            data={'username': username,
                                                                  'enc_password': formatted_password},
                                                            store_cookies=True).content)
@@ -112,7 +112,7 @@ class InstagramGoblin(MetaGoblin):
             code = int(input(f'[{self.NAME}] enter security code: '))
             response = self.post(verify_url, data={'security_code': code}, store_cookies=True)
             self.set_cookies()
-            answer = self.parser.load_json(response.content)
+            answer = self.parser.from_json(response.content)
 
             if answer.get('status') == 'ok':
                 self.logged_in = True
@@ -131,7 +131,7 @@ class InstagramGoblin(MetaGoblin):
         self.extend_cookie('Cookie', 'ig_pr=1')
         response = self.get(urljoin(self.BASE_URL, self.username)).content
         if response:
-            data = self.parser.load_json(self.parser.regex_search(r'(?<=sharedData\s=\s){.+?}(?=;)', response))
+            data = self.parser.from_json(self.parser.regex_search(r'(?<=sharedData\s=\s){.+?}(?=;)', response))
 
             if 'entry_data' in data:
                 self.user_id = data['entry_data']['ProfilePage'][0]['graphql']['user']['id']
@@ -144,7 +144,7 @@ class InstagramGoblin(MetaGoblin):
         '''make initial request to obtain user id'''
         response = self.get(f'{self.SEARCH_URL}{self.username}')
         try:
-            response = self.parser.load_json(response.content)
+            response = self.parser.from_json(response.content)
         except:
             response = ''
 
@@ -172,7 +172,7 @@ class InstagramGoblin(MetaGoblin):
                 }
             )
 
-            response = self.parser.load_json(self.get(self.MEDIA_URL.format(quote(variables, safe='"'))).content)
+            response = self.parser.from_json(self.get(self.MEDIA_URL.format(quote(variables, safe='"'))).content)
             if 'data' in response:
                 # NOTE: 'edge_user_to_photos_of_you' for tagged media
                 for edge in response['data']['user']['edge_owner_to_timeline_media'].get('edges', ''):
@@ -199,7 +199,7 @@ class InstagramGoblin(MetaGoblin):
 
     def get_stories(self, url):
         '''extract media from stories'''
-        response = self.parser.load_json(self.get(url).content)
+        response = self.parser.from_json(self.get(url).content)
 
         if 'data' in response:
             for reel_media in response['data'].get('reels_media', ''):
@@ -221,7 +221,7 @@ class InstagramGoblin(MetaGoblin):
     def get_highlight_stories(self):
         '''get highlight instagram stories'''
         # NOTE: get highlight reels ids
-        response = self.parser.load_json(self.get(self.STORIES_IDS_URL.format(quote('{{"user_id":"{}","include_chaining":false,' \
+        response = self.parser.from_json(self.get(self.STORIES_IDS_URL.format(quote('{{"user_id":"{}","include_chaining":false,' \
                                                                                     '"include_reel":false,"include_suggested_users":false,' \
                                                                                     '"include_logged_out_extras":false,"include_highlight_reels":true,' \
                                                                                     '"include_live_status":true}}'.format(self.user_id), safe='"'))).content)

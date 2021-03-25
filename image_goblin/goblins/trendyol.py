@@ -44,7 +44,7 @@ class TrendyolGoblin(MetaGoblin):
                 self.logger.spin()
 
                 id = self.extract_id(target)
-                response = self.parser.load_json(self.get(f'{self.API_URL}/{id}').content)
+                response = self.parser.from_json(self.get(f'{self.API_URL}/{id}').content)
 
                 if 'result' in response:
                     for image in response['result'].get('images', ''):

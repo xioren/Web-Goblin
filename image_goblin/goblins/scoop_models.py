@@ -31,7 +31,7 @@ class ScoopGoblin(MetaGoblin):
 
                 slug = self.extract_slug(target)
 
-                response = self.parser.load_json(self.post(self.API_URL, data={'slug': slug}).content)
+                response = self.parser.from_json(self.post(self.API_URL, data={'slug': slug}).content)
 
                 # NOTE: filename present but different than url media id
                 # NOTE: video book present in json but not used
