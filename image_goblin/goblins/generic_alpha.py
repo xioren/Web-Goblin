@@ -4,7 +4,7 @@ from meta import MetaGoblin
 
 class AlphaGoblin(MetaGoblin):
     '''handles: Magento API (media/catalog)
-    docs: https://docs.magento.com/m2/ee/user_guide/catalog/product-image-resizing.html
+    docs: https://docs.magento.com/user-guide/catalog/product-image-resizing.htmll
     accepts:
         - image*
         - webpage*
@@ -27,7 +27,7 @@ class AlphaGoblin(MetaGoblin):
 
     NAME = 'alpha goblin'
     ID = 'alpha'
-    URL_PAT = r'https?:[^"\s\n]+media\\?/catalog\\?/product\\?/[^"\s\n]+\.jpe?g'
+    URL_PAT = r'https?:[^"\s\n]+media\\?/catalog\\?/product\\?/[^"\s\n]+\.[a-z\d]+'
 
     def __init__(self, args):
         super().__init__(args)
@@ -54,7 +54,7 @@ class AlphaGoblin(MetaGoblin):
                 else:
                     self.logger.log(2, self.NAME, 'looting', target)
                     self.logger.spin()
-                    
+
                     urls.extend(self.generate_urls(target, False))
 
             self.delay()

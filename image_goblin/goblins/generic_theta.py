@@ -60,7 +60,7 @@ class ThetaGoblin(MetaGoblin):
 
     def extract_vendor(self, url):
         '''extract shopify vendor url'''
-        return self.parser.regex_search(r'(?<=://)?\w+(\.[a-z]+)+', url)
+        return self.parser.regex_search(r'(?<=://)?[\-\w]+(\.[a-z]+)+', url)
 
     def extract_product(self, url):
         '''extract shopify product tag'''
@@ -92,7 +92,7 @@ class ThetaGoblin(MetaGoblin):
 
         for url in urls:
             if self.parser.regex_search(self.HASH_PAT, target, capture=False):
-                # NOTE: collect de hashed alternate url if a hash is present
+                # NOTE: collect de-hashed url if an alternate hash is present
                 self.collect(self.trim(url), clean=True)
             self.collect(url, clean=True)
 

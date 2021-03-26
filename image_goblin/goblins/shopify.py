@@ -1,6 +1,9 @@
 from goblins.generic_theta import ThetaGoblin
 
 
+# NOTE: front end for use with --goblin cammand line argument
+
+
 class ShopifyGoblin(ThetaGoblin):
 
     NAME = 'shopify goblin'

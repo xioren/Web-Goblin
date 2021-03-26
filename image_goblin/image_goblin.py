@@ -8,6 +8,8 @@ from version import __version__
 
 parser = ArgumentParser(usage='image-goblin [OPTIONS] [URL]')
 
+parser.add_argument('--best', help='used in conjunction with --force, overwrites files only if new file size is greater', action='store_true')
+
 parser.add_argument('-d', '--delay', help='delay ("-1" for randomized delay), default: 0', type=float, default=0)
 
 parser.add_argument('--dir', help='specify name or path of the download directory. \

@@ -1,7 +1,7 @@
 # ImageGoblin
 
-#### changelog v0.6.1:
-+ shopify rework
+#### changelog v0.6.2:
++ removed topshop
 + bug fixes
 + miscellaneous code clean up and improvements
 
