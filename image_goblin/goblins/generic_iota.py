@@ -30,7 +30,7 @@ class IotaGoblin(MetaGoblin):
 
     def extract_base(self, url):
         '''extract url base'''
-        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z](\.[a-z\d]+)', '', self.parser.dequery(url)).rstrip('/')
+        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z](\.[a-z\d]+)?', '', self.parser.dequery(url)).rstrip('/')
 
     def extract_product(self, url):
         '''extract product from url'''

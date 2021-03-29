@@ -1,7 +1,6 @@
 # ImageGoblin
 
-#### changelog v0.6.2:
-+ removed topshop
+#### changelog v0.6.3:
 + bug fixes
 + miscellaneous code clean up and improvements
 
@@ -17,7 +16,7 @@
 
 	*examples:*
 
-	```python
+	```bash
 	image-goblin --verbose https://www.website.com/pages/somewebpage.html
 
 	image-goblin --local urls.txt --noskip
@@ -30,7 +29,7 @@
 
 	*examples:*
 
-	```python
+	```bash
 	image-goblin -f "rem -\d+x\d+" https://website.com/pages/somewebpage.html
 
 	image-goblin --format "sub size=\w+ size=large" https://website.com/uploadsimage_01.jpg?size=some_size
@@ -40,7 +39,7 @@
 
 	*example:*
 
-	```python
+	```bash
 	image-goblin --timeout 10 --delay 3 https://website.com/uploads/image_#01#.jpg
 	```
 
