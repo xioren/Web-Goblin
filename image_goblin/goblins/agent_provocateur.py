@@ -71,4 +71,5 @@ class AgentProvocateurGoblin(MetaGoblin):
             if 'flatshot' not in url: # skip product images
                 self.collect(url)
 
+        self.reset_headers()
         self.loot()

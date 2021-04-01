@@ -4,7 +4,7 @@ import mimetypes
 import urllib.parse
 
 from string import ascii_letters, digits
-from os.path import join, exists, split, splitext
+from os.path import exists, split, splitext
 
 
 class Parser:
@@ -13,12 +13,12 @@ class Parser:
     QUALITY_PAT = re.compile(r'q((ua)?li?ty)?=\d+')
     FILTER_PAT = re.compile(r'(?:\.(js|css|pdf|php|html|svg(\+xml)?)|favicon|[{}])|\'\s?\+' \
                             r'|data\:image/|facebook\.com/tr', flags=re.IGNORECASE)
-    MISC_REPLACEMENTS = {'amp;': '', 'background-image:url(': ''}
+    MISC_REPLACEMENTS = {'amp;': '', 'background-image:url(': '', 'url(': '', r'\\': ''}
     ABSOLUTE_PAT = r'(?:/?[^/\.]+\.[^/]+(?=/))'
     SCALING_PATS = (
         re.compile(r'[\-_]?((x+)?-?(?<![\w\-])l(arge)?(?!\w)|profile|square)(?![\w])[\-_/]?', flags=re.IGNORECASE),
         re.compile(r'[\.-_]\d+w(?=[-_\.])|[\.-_]w\d+(?=[-_\.])'), # -000w
-        re.compile(r'(?<=/)([a-z\d]+_[a-z\d\:\.]+,)+[a-z\d]+_[a-z\d\:\.]+(/v1)?/'), # cloudfront
+        re.compile(r'(?<=/)([a-z\d]+_[a-z\d\:\./]+,)+[a-z\d]+_[a-z\d\:\.]+(/v1)?/'), # cloudfront
         re.compile(r'[@\-_/\.]\d{2,}x(\d{2,})?(@\dx)?(?=\.|/)'), # 000x[000]
         re.compile(r'[@\-_/\.](\d{2,})?x\d{2,}(_crop)?(?=\.|/)'), # [000]x000
         re.compile(r'styles/\w+/public/'), # styles/xxxx_xxxx_xxxx_xxxx/public
@@ -171,22 +171,21 @@ class Parser:
         - expand relative urls
         - handle control characters
         '''
-        # TODO: this is messy --> improve
-        url = url.replace('\\', '').rstrip(')').replace('url(', '')
+        for item in self.MISC_REPLACEMENTS:
+            url = url.replace(item, self.MISC_REPLACEMENTS[item])
+
         if re.search(self.ABSOLUTE_PAT, url): # absolute path
             url = self.add_scheme(url.lstrip('/'))
         else: # relative path
             url = urllib.parse.urljoin(self.origin_url, url)
 
-        for item in self.MISC_REPLACEMENTS:
-            url = url.replace(item, self.MISC_REPLACEMENTS[item])
-        return self.make_url_safe(url)
+        return self.make_url_safe(url.rstrip(')'))
 
     def make_unique(self, path):
         '''make filepath unique'''
         n = 1
         while True:
-            new_path = join(path, f'-{n}.'.join(path.split('.')))
+            new_path = f'-{n}.'.join(path.rsplit('.', 1))
             if exists(new_path):
                 n += 1
             else:

@@ -46,6 +46,7 @@ from goblins.generic_omega import OmegaGoblin
 from goblins.getty import GettyGoblin
 from goblins.giphy import GiphyGoblin
 from goblins.gisela import GiselaGoblin
+from goblins.gooseberry import GooseberryGoblin
 from goblins.guess import GuessGoblin
 from goblins.h_and_m import HMGoblin
 from goblins.hanne_bloch import HanneBlochGoblin
@@ -186,6 +187,7 @@ goblins = {
     'getty': (r'gettyimages\.[a-z]+', GettyGoblin),
     'giphy': (r'giphy\.[a-z]+', GiphyGoblin),
     'gisela': (r'gisela\.[a-z]+', GiselaGoblin),
+    'gooseberry': (r'gooseberryintimates\.[a-z]+', GooseberryGoblin),
     'guess': (r'guess(-img|\.[a-z]+)', GuessGoblin),
     'handm': (r'hm\.[a-z]+', HMGoblin),
     'hannebloch': (r'hanne-bloch\.[a-z]+', HanneBlochGoblin),

@@ -54,4 +54,5 @@ class SavageXGoblin(MetaGoblin):
 
             self.collect(self.parser.regex_sub(r'\d+x\d+', '1600x1600', url).replace('-(XS-XL)', ''))
 
+        self.reset_headers()
         self.loot()

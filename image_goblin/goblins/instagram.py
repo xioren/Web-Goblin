@@ -251,6 +251,7 @@ class InstagramGoblin(MetaGoblin):
                 self.new_collection()
                 self.setup(target)
                 if '/p/' in target:
+                    # TODO: fix
                     self.logger.log(0, self.NAME, 'ERROR', 'post urls are temporarily disabled')
                 else:
                     if self.args['mode'] in ('latest', 'recent'):
@@ -270,3 +271,4 @@ class InstagramGoblin(MetaGoblin):
                 self.move_vid(self.user_dir)
         if self.logged_in:
             self.logout()
+        self.reset_headers()

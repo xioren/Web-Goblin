@@ -24,6 +24,7 @@ class ThetaGoblin(MetaGoblin):
         - fleur du mal
         - for love and lemons
         - fortnight
+        - gooseberry
         - hanne bloch
         - honey birdette
         - juillet
@@ -84,7 +85,7 @@ class ThetaGoblin(MetaGoblin):
 
                 vendor = self.extract_vendor(target)
                 product = self.extract_product(target)
-                if product:    
+                if product:
                     response = self.parser.from_json(self.get(self.QUERY.format(vendor, product)).content)
                     urls.extend(response.get('images', ''))
 

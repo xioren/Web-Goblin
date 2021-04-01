@@ -70,4 +70,5 @@ class MangoGoblin(MetaGoblin):
                 continue
             self.collect(f'{self.parser.dequery(url)}{self.QUERY}')
 
+        self.reset_headers()
         self.loot()

@@ -5,3 +5,4 @@
 - proxy support
 - multi replace function
 - pre-compile all regex patterns?
+- remove goblin specific headers entries after use

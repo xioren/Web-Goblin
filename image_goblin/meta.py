@@ -35,10 +35,10 @@ class MetaGoblin:
             self.path_main = os.path.join('goblin_loot', self.NAME.replace(' ', '_'))
 
         if self.args['mask']:
-            user_agent = 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36'
+            self.user_agent = 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.152 Safari/537.36'
         else:
-            user_agent = f'ImageGoblin/{__version__}'
-        self.headers = {'User-Agent': user_agent,
+            self.user_agent = f'ImageGoblin/{__version__}'
+        self.headers = {'User-Agent': self.user_agent,
                         'Accept': '*/*',
                         'Accept-Encoding': 'gzip'}
 
@@ -76,6 +76,12 @@ class MetaGoblin:
     ####################################################################
     # miscellaneous
     ####################################################################
+
+    def reset_headers(self):
+        '''reset headers to generic'''
+        self.headers = {'User-Agent': self.user_agent,
+                        'Accept': '*/*',
+                        'Accept-Encoding': 'gzip'}
 
     def delay(self, override=None):
         '''central delay method'''

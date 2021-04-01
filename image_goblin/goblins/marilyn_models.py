@@ -52,4 +52,5 @@ class MarilynGoblin(MetaGoblin):
         for url in urls:
             self.collect(url.replace('.jpg', '_M.JPG'))
 
+        self.reset_headers()
         self.loot()

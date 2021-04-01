@@ -19,13 +19,13 @@ parser.add_argument('--ext', help='specify which extension(s) to download jpg,pn
 
 parser.add_argument('--feed', help='input urls one at a time', action='store_true')
 
-parser.add_argument('--filename', help='specify filename to use', type=str, default='')
+parser.add_argument('--filename', help='specify filename to use (will always be made unique for each file)', type=str, default='')
 
 parser.add_argument('--filter', help='download only urls containing filter string; can handle regex patterns', type=str, default='')
 
 parser.add_argument('--force', help='force overwriting existing files', action='store_true')
 
-parser.add_argument('-f', '--format', help='formatting modifier (action modifier[ modifier]) - needs to be quoted')
+parser.add_argument('-f', '--format', help='formatting modifier (action modifier[ modifier]), needs to be quoted')
 
 parser.add_argument('-g', '--goblin', help='use a specific goblin')
 
@@ -33,23 +33,23 @@ parser.add_argument('--greedy', help='find urls based on regex instead of html t
 
 parser.add_argument('--list', help='list available goblins', action='store_true')
 
-parser.add_argument('-l', '--local', help='filename of a local text file containing urls')
+parser.add_argument('-l', '--local', help='filename or path of a local text file containing urls')
 
 parser.add_argument('--login', help='log in (goblin dependant)', action='store_true')
 
 parser.add_argument('--mask', help='use a common user agent header', action='store_true')
 
-parser.add_argument('--minsize', help='minimum filesize to download (in bytes) default: 30000 (30kb)', type=int, default=30000)
+parser.add_argument('--minsize', help='minimum filesize to download (in bytes), default: 30000 (30kb)', type=int, default=30000)
 
 parser.add_argument('-m', '--mode', help='mode settings (goblin dependant)')
 
 parser.add_argument('--nodl', help='print urls to stdout instead of downloading', action='store_true')
 
-parser.add_argument('--noskip', help='make filename unique if a file with the same filename already exists, instead of skipping', action='store_true')
+parser.add_argument('--noskip', help='make filenames unique if a file with the same name already exists, instead of skipping', action='store_true')
 
 parser.add_argument('--nosort', help='download directly to current directory, without creating sub dirs', action='store_true')
 
-parser.add_argument('--noup', help='do not remove cropping from urls', action='store_true')
+parser.add_argument('--noup', help='do not remove cropping and scaling from urls', action='store_true')
 
 parser.add_argument('--posts', help='number of posts (n<100) to fetch (goblin dependant)', type=int, default=100)
 
@@ -59,7 +59,7 @@ parser.add_argument('--slugify', help='slugify filenames', action='store_true')
 
 parser.add_argument('--step', help='iteration step size (n)', type=int, default=1)
 
-parser.add_argument('-t', '--timeout', help='iteration timeout threshold (n)', type=int, default=5)
+parser.add_argument('-t', '--timeout', help='consecutive failed attempts threshold (n) during iteration, default: 5', type=int, default=5)
 
 parser.add_argument('url', nargs='?', help='webpage or image url')
 

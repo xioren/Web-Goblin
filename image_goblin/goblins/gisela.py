@@ -46,4 +46,5 @@ class GiselaGoblin(MetaGoblin):
         for url in urls:
             self.collect(url)
 
+        self.reset_headers()
         self.loot()

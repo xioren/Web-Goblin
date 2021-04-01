@@ -46,4 +46,5 @@ class WoodWoodGoblin(MetaGoblin):
                 self.collect(f'https://www.woodwood.com/shared/{id}/{n}/{filename}.jpg',
                              filename=filename.replace('1600x2400c', f'{id}-{n}'))
 
+        self.reset_headers()
         self.loot()
