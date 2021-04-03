@@ -1,9 +1,7 @@
 # ImageGoblin
 
-#### changelog v0.6.4:
+#### changelog v0.6.5:
 + new goblin
-+ now resets headers after any goblin that modifies them completes.
-this prevents header crossover between goblins.
 + bug fixes
 + miscellaneous code clean up and improvements
 

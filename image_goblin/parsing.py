@@ -16,7 +16,8 @@ class Parser:
     MISC_REPLACEMENTS = {'amp;': '', 'background-image:url(': '', 'url(': '', r'\\': ''}
     ABSOLUTE_PAT = r'(?:/?[^/\.]+\.[^/]+(?=/))'
     SCALING_PATS = (
-        re.compile(r'[\-_]?((x+)?-?(?<![\w\-])l(arge)?(?!\w)|profile|square)(?![\w])[\-_/]?', flags=re.IGNORECASE),
+        re.compile(r'[\-_]?((x+)?-?(?<![\w\-])l(arge)?(?!\w)|profile|square)(?![\w])[\-_/]?',
+                   flags=re.IGNORECASE),
         re.compile(r'[\.-_]\d+w(?=[-_\.])|[\.-_]w\d+(?=[-_\.])'), # -000w
         re.compile(r'(?<=/)([a-z\d]+_[a-z\d\:\./]+,)+[a-z\d]+_[a-z\d\:\.]+(/v1)?/'), # cloudfront
         re.compile(r'[@\-_/\.]\d{2,}x(\d{2,})?(@\dx)?(?=\.|/)'), # 000x[000]
@@ -36,7 +37,7 @@ class Parser:
         self.ALPHA = ascii_letters + digits + '-_'
         self.user_formatting = user_formatting
 
-        self.ext_filter = [self.extension(f'null.{ext.lstrip(".")}') for ext in ext_filter.split(',')]
+        self.ext_filter = [self.extension(f'null.{ext.lstrip(" .")}') for ext in ext_filter.split(',')]
         if 'null.jpg' in self.ext_filter and 'null.jpeg' not in self.ext_filter:
             self.ext_filter.append('null.jpeg')
         if 'null.jpeg' in self.ext_filter and 'null.jpg' not in self.ext_filter:
@@ -96,12 +97,10 @@ class Parser:
         # NOTE: left in for compatibility, regex_findall does the work.
         return self.regex_findall(pattern, html)
 
-    def extract_filename(self, url, slugify=False):
+    def extract_filename(self, url):
         '''extract filename from url'''
         url = self.unquote(self.dequery(url).rstrip('/'))
         filename = split(url)[-1].replace(splitext(url)[-1], '')
-        if slugify:
-            return self.slugify(filename)
         return filename
 
     def slugify(self, filename):
@@ -137,6 +136,7 @@ class Parser:
 
     def unquote(self, filename):
         '''unquote filenames'''
+        # FIXME: this could loop forever in some cases
         while '%' in filename:
             filename = urllib.parse.unquote(filename)
         return filename
@@ -184,12 +184,11 @@ class Parser:
     def make_unique(self, path):
         '''make filepath unique'''
         n = 1
-        while True:
+        new_path = f'-{n}.'.join(path.rsplit('.', 1))
+        while exists(new_path):
             new_path = f'-{n}.'.join(path.rsplit('.', 1))
-            if exists(new_path):
-                n += 1
-            else:
-                return new_path
+            n += 1
+        return new_path
 
     @staticmethod
     def valid_url(url):
@@ -246,7 +245,9 @@ class Parser:
         return False
 
     def from_json(self, json_string):
-        '''convert JSON to a dictionary safely and if necessary fix improper use of double quote delimiters (*cough* imgur)'''
+        '''convert JSON to a dictionary safely and if necessary fix improper use
+        of double quote delimiters (*cough* imgur)
+        '''
         if not json_string:
             return {}
         try:

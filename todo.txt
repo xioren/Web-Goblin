@@ -1,8 +1,8 @@
 - add better exception handling for json key errors (ongoing)
 - decrop queries instead of removing all together
-- rename various ids to common slug term
+- rename various ids to common slug term (ongoing)
 - free stock image sites
 - proxy support
 - multi replace function
 - pre-compile all regex patterns?
-- remove goblin specific headers entries after use
+- aliexpress

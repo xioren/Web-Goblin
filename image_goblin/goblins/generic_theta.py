@@ -75,7 +75,7 @@ class ThetaGoblin(MetaGoblin):
 
             if 'cdn.shopify' in target or 'i.shgcdn' in target:
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
-                if 'i.shgcdn' in url:
+                if 'i.shgcdn' in target:
                     urls.append(self.decrop(target))
                 else:
                     urls.append(target)

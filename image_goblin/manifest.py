@@ -1,5 +1,6 @@
 from goblins.adore_me import AdoreMeGoblin
 from goblins.agent_provocateur import AgentProvocateurGoblin
+from goblins.aliexpress import AliExpressGoblin
 from goblins.american_apparel import AmericanApparelGoblin
 from goblins.ami_clubwear import AMIGoblin
 from goblins.anthropologie import AnthropologieGoblin
@@ -141,6 +142,7 @@ from goblins.zara import ZaraGoblin
 goblins = {
     'adoreme': (r'adoreme\.[a-z]+', AdoreMeGoblin),
     'agentprovocateur': (r'agentprovocateur\.[a-z]+', AgentProvocateurGoblin),
+    'aliexpress': (r'(aliexpress|alicdn)\.[a-z]+', AliExpressGoblin),
     'americanapparel': (r'americanapparel\.[a-z]+', AmericanApparelGoblin),
     'amiclubwear': (r'amiclubwear\.[a-z]+', AMIGoblin),
     'anthropologie': (r'anthropologie(\.[a-z]+|/)', AnthropologieGoblin),

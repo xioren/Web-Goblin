@@ -235,9 +235,8 @@ class MetaGoblin:
 
     def downloader(self, response, url, filepath, *args, error='', **kwargs):
         '''download web content'''
-        # NOTE: default buffer == 8192
         ext = self.parser.extension(url)
-        filename = self.parser.extract_filename(filepath, self.args['slugify'])
+        filename = self.parser.extract_filename(filepath)
         length = int(response.info().get('Content-Length', -1))
         readable_length = round(length/1000000, 2)
         read = 0
@@ -251,7 +250,7 @@ class MetaGoblin:
             if kwargs['attempt'] > 0:
                 # NOTE: remove incomplete files that timed out during initial read
                 # WARNING: possible to erroneously remove legit files with same filename
-                # FIXME: lazy approach
+                # OPTIMIZE: lazy approach
                 os.remove(filepath)
             elif self.args['force']:
                 if self.args['best'] and length <= os.path.getsize(filepath):
@@ -330,7 +329,7 @@ class MetaGoblin:
     def collect(self, url, filename='', clean=False):
         '''finalize and add urls to the collection'''
         if self.parser.filter(url):
-            # FIXME: adding valid url check here rejects relative urls
+            # BUG: adding valid url check here rejects relative urls
             return None
 
         if clean:
@@ -338,7 +337,9 @@ class MetaGoblin:
         if self.args['filename']:
             filename = self.args['filename']
         elif not filename:
-            filename = self.parser.extract_filename(url, self.args['slugify'])
+            filename = self.parser.extract_filename(url)
+        if self.args['slugify']:
+            filename = self.parser.slugify(filename)
         ext = self.parser.extension(url)
 
         # NOTE: add url and filename to collection as hashable string
@@ -378,7 +379,7 @@ class MetaGoblin:
                     continue
 
             attempt = self.download(url, filepath)
-            # FIXME: sites that always return data, such as html instead of 404 make iterator goblin run forever.
+            # BUG: sites that always return data, such as html instead of 404 make iterator goblin run forever.
             if attempt:
                 self.logger.log(2, self.NAME, 'success', filename, clear=True)
                 failed = 0
