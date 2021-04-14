@@ -25,7 +25,7 @@ parser.add_argument('--filter', help='download only urls containing filter strin
 
 parser.add_argument('--force', help='force overwriting existing files', action='store_true')
 
-parser.add_argument('-f', '--format', help='formatting modifier (action modifier[ modifier]), needs to be quoted')
+parser.add_argument('-f', '--format', help='formatting modifier (action modifier[ replacement]), needs to be quoted')
 
 parser.add_argument('-g', '--goblin', help='use a specific goblin')
 

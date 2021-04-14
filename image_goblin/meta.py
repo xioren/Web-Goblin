@@ -116,17 +116,6 @@ class MetaGoblin:
                     self.logger.log(1, self.NAME, e, 'exiting')
                     exit(5) # NOTE: input/output error
 
-    def toggle_collecton_type(self):
-        '''toggle collection type between list and set'''
-        if isinstance(self.collection, list):
-            self.collection = set()
-        else:
-            self.collection = []
-
-    def new_collection(self):
-        '''initialize a new collection'''
-        self.collection.clear()
-
     def unzip(data):
         '''gzip decompression'''
         try:
@@ -395,4 +384,7 @@ class MetaGoblin:
         else:
             self.logger.log(1, self.NAME, 'complete', f'{looted} file(s) looted', clear=True)
 
-        return timed_out
+        if self.args['nodl']:
+            return None
+        else:
+            return timed_out

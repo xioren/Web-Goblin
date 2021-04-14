@@ -1,7 +1,6 @@
 # ImageGoblin
 
-#### changelog v0.6.5:
-+ new goblin
+#### changelog v0.6.6:
 + bug fixes
 + miscellaneous code clean up and improvements
 
@@ -26,7 +25,7 @@
 	```
 
 ### Mode Specific Operation:
-+ *generic goblin:* for any site without a specific goblin. by default, this goblin will automatically try to remove common cropping. using the ```--format``` option overrides this functionality and instead formats according to user input modifier(s). the usage format for this is ```--format "mode modifier[ replacement]"```. ```"add modifier"``` will append the modifier to the end of the url; for example a query string. ```"sub modifier replacement"``` substitutes, while ```"rem modifier"``` removes. the modifier can be a regular string or regex pattern. the entire format argument needs to be quoted. using the ```--noup``` flag prevents any automatic manipulation of urls. you can also enforce greedy mode with ```--greedy```; sometimes this will find more images.
++ *generic goblin:* for any site without a specific goblin. by default, this goblin will automatically try to remove common cropping. using the ```--format``` option overrides this functionality and instead formats according to user input modifier(s). the usage format for this is ```--format "action modifier[ replacement]"```. ```"add modifier"``` will append the modifier to the end of the url; for example a query string. ```"sub modifier replacement"``` substitutes, while ```"rem modifier"``` removes. the modifier can be a regular string or regex pattern. the entire format argument needs to be quoted. using the ```--noup``` flag prevents any automatic manipulation of urls. you can also enforce greedy mode with ```--greedy```; sometimes this will find more images.
 
 	*examples:*
 

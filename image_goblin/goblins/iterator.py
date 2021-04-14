@@ -14,6 +14,7 @@ class IteratorGoblin(MetaGoblin):
 
     def __init__(self, args):
         super().__init__(args)
+        self.collection = []
         self.block_size = self.args['step'] * 100
 
     def unique(self, url, other_url):
@@ -45,21 +46,20 @@ class IteratorGoblin(MetaGoblin):
 
     def main(self):
         '''main iteration method'''
-        self.toggle_collecton_type() # convert collection to list so that urls are ordered
         for target in self.args['targets'][self.ID]:
 
             base, iterable, end = self.isolate_parts(target)
             self.is_unique = self.unique(f'{base}{iterable}{end}', f'{base}{self.increment_iterable(iterable)}{end}')
 
             while True:
+                self.collection.clear()
                 self.logger.log(1, self.NAME, 'iterating',
                                 f'block: {iterable}-{str(int(iterable) + self.block_size-self.args["step"]).zfill(len(iterable))}')
                 self.generate_block(base, iterable, end)
 
                 timed_out = self.loot(timeout=self.args['timeout'])
-                if timed_out:
+                if timed_out or timed_out is None:
                     self.logger.log(1, self.NAME, 'timed out', f'after {self.args["timeout"]} attempts')
                     break
                 else:
                     iterable = self.increment_iterable(iterable)
-                    self.new_collection()

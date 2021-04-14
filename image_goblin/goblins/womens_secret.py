@@ -2,7 +2,7 @@ from goblins.generic_gamma import GammaGoblin
 
 
 # NOTE: https://womensecret.com/on/demandware.store/Sites-WS-Site/es_ES/GTM-GetProductJSON?pid=
-
+# NOTE: https://womensecret.com/on/demandware.store/Sites-WS-Site/es_ES/GTM-GetProductJSON?pid=4989295
 
 class WomensSecretGoblin(GammaGoblin):
 
