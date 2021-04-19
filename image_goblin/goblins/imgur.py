@@ -1,7 +1,7 @@
 from meta import MetaGoblin
 
 
-# misc: '/noscript'
+# QUESTION: will client id work universaly?
 
 
 class ImgurGoblin(MetaGoblin):
@@ -13,12 +13,13 @@ class ImgurGoblin(MetaGoblin):
     NAME = 'imgur goblin'
     ID = 'imgur'
     BASE_URL = 'https://i.imgur.com/'
+    API_URL = 'https://api.imgur.com/post/v1'
 
     def __init__(self, args):
         super().__init__(args)
 
-    def trim(self, url):
-        return self.parser.regex_sub(r'(/embed|#).?$', '', self.parser.dequery(url))
+    def extract_album_id(self, url):
+        return self.parser.dequery(url).split('/')[-1]
 
     def upgrade(self, url):
         '''upgrade image size'''
@@ -43,40 +44,11 @@ class ImgurGoblin(MetaGoblin):
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
 
-                if '/r/' in target:
+                album_id = self.extract_album_id(target)
 
-                    matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
-                                                           r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
-                    for match in matches:
-                        items = self.parser.from_json(match)
-                        urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
-                else:
-                    matches = self.parser.extract_by_regex(self.get(self.trim(target)).content,
-                                                           r'(?<=image\s{15}:\s){[^\n]+}(?=,\n)')
-                    for match in matches:
-                        items = self.parser.from_json(match)
-                        if items['is_album'] == True:
-                            for item in items['album_images']['images']:
-                                urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
-                        else:
-                            urls.append(f'{self.BASE_URL}{items["hash"]}{items["ext"]}')
-
-                    if not urls: # sign in probably required -> try bypass
-                        self.logger.log(1, self.NAME, 'bypassing sign in gate')
-
-                        if '/a/' in target:
-                            matches = self.parser.extract_by_regex(self.get(f'{self.trim(target)}/embed').content,
-                                                                   r'(?<=images\s{6}:\s){[^\n]+}(?=,\n)')
-                            for match in matches:
-                                items = self.parser.from_json(match)
-
-                                for item in items.get('images', ''):
-                                    urls.append(f'{self.BASE_URL}{item["hash"]}{item["ext"]}')
-                        else:
-                            response = self.get(target)
-                            urls.append(self.parser.regex_search(r'og:image"\s+content="[^"\?]+', response.content).split('="')[-1])
-                            if 'og:video' in response.content:
-                                urls.append(self.parser.regex_search(r'og:video"\s+content="[^"\?]+', response.content).split('="')[-1])
+                response = self.parser.from_json(self.get(f'{self.API_URL}/albums/{album_id}?client_id=546c25a59c58ad7&include=media').content)
+                for item in response.get('media', ''):
+                    urls.append(item['url'])
 
             self.delay()
 

@@ -31,6 +31,6 @@ class TallyWeijlGoblin(MetaGoblin):
             self.delay()
 
         for url in urls:
-            self.collect(self.parser.regex_sub(r'img/\d+/\d+', 'img/1800/1800', url))
+            self.collect(self.parser.regex_sub(r'img/\d+/\d+/resize', 'media/catalog/product', url))
 
         self.loot()
