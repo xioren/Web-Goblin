@@ -1,6 +1,6 @@
 ### Usage:
 
-```bash
+```
 usage: image-goblin [OPTIONS] [URL]
 
 positional arguments:
@@ -92,8 +92,6 @@ optional arguments:
 + *other goblins:* with a few exceptions (see ```--help``` for more info), all other goblins are self contained and require no explanation.
 
 #### Misc:
-+ this program has been tested on linux/windows/android.
-+ the install script is optional and \*nix specific. it only serves to add a symlink to $HOME/.local/bin so that the program can be run from the shell with 'image-goblin' instead of 'python3 /path/to/image_goblin.py or ./image_goblin.py'.
 + a specific goblin can be forced using ```--goblin```.
 + a random delay (0<=n<=10) can be used with ```--delay -1```
 + the ```--format``` input needs to be exact so make sure modifiers/spaces have not been erroneously added or left out.
