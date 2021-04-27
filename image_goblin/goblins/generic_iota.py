@@ -48,8 +48,6 @@ class IotaGoblin(MetaGoblin):
         urls = []
 
         for target in self.args['targets'][self.ID]:
-            target = self.parser.regex_sub(r'(eu)?images\.[a-z]+', 's7g10.scene7', target)
-
             if 'i.localised' in target:
                 # NOTE: alt api
                 self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
@@ -57,7 +55,7 @@ class IotaGoblin(MetaGoblin):
                     urls.append(target.replace('.jpg', '_LARGE.jpg').replace('_THUMB', ''))
                 else:
                     urls.append(target)
-            elif 'scene7' in target:
+            elif 'scene7' in target or 'images.', in targe:
                 # NOTE: main api
                 slug = self.extract_slug(target)
                 url_base = self.extract_base(target)
