@@ -55,7 +55,7 @@ class IotaGoblin(MetaGoblin):
                     urls.append(target.replace('.jpg', '_LARGE.jpg').replace('_THUMB', ''))
                 else:
                     urls.append(target)
-            elif 'scene7' in target or 'images.' in targe:
+            elif 'scene7' in target or 'images.' in target:
                 # NOTE: main api
                 slug = self.extract_slug(target)
                 url_base = self.extract_base(target)
