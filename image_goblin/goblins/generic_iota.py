@@ -24,17 +24,13 @@ class IotaGoblin(MetaGoblin):
     def __init__(self, args):
         super().__init__(args)
 
-    def extract_id(self, url):
-        '''extract image id from url'''
-        return self.parser.regex_search(r'\w+(_\w+)?(?=_\w+)', self.parser.dequery(url))
+    def extract_slug(self, url):
+        '''extract image slug from url'''
+        return self.parser.dequery(url).rstrip('/').rsplit('/', 1)[1]
 
     def extract_base(self, url):
         '''extract url base'''
-        return self.parser.regex_sub(r'/\d+_\d+_[A-Za-z](\.[a-z\d]+)?', '', self.parser.dequery(url)).rstrip('/')
-
-    def extract_product(self, url):
-        '''extract product from url'''
-        return self.parser.dequery(url).rstrip('/').split('/')[-1]
+        return url.rsplit('/', 1)[0]
 
     def set_auth_tokens(self, tokens):
         '''extract auth and reauth tokens from response cookie'''
@@ -54,26 +50,41 @@ class IotaGoblin(MetaGoblin):
         for target in self.args['targets'][self.ID]:
             target = self.parser.regex_sub(r'(eu)?images\.[a-z]+', 's7g10.scene7', target)
 
-            if 'scene7' in target:
-                # NOTE: singapore uses different cdn
-                if 'i.localised' in target:
-                    self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
-                id = self.extract_id(target)
-                self.url_base = self.extract_base(target)
+            if 'i.localised' in target:
+                # NOTE: alt api
+                self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
+                if '_LARGE' not in target:
+                    urls.append(target.replace('.jpg', '_LARGE.jpg').replace('_THUMB', ''))
+                else:
+                    urls.append(target)
+            elif 'scene7' in target:
+                # NOTE: main api
+                slug = self.extract_slug(target)
+                url_base = self.extract_base(target)
 
                 for mod in self.MODIFIERS:
-                    urls.append(f'{self.url_base}/{id}{mod}{self.QUERY}')
+                    urls.append(f'{url_base}/{slug.rsplit("_", 1)[0]}_{mod}{self.QUERY}')
             else:
-                # FIXME: currently returns 403 forbidden on eu
-                # QUESTION: scaling problem?
-                if 'en-sg' in target or 'en-gb' in target:
-                    self.logger.log(2, self.NAME, 'WARNING', 'webpage urls not supported', once=True)
-                else:
-                    self.logger.log(2, self.NAME, 'looting', target)
-                    self.logger.spin()
+                self.logger.log(2, self.NAME, 'looting', target)
+                self.logger.spin()
 
+                if self.is_alt(target):
+                    # NOTE: alt api
+                    local = self.parser.regex_search('[a-z]+(?=\.urbanoutfitters\.com)', target)
+                    slug = self.extract_slug(target)
+                    response = self.parser.from_json(self.get(f'{local}.{self.ALT_API_URL}/{slug}?lang=en&siteTag=UO_{local.upper()}').content)
+
+                    for option in response.get('options', ''):
+                        for url in option['media']['large']:
+                            urls.append(url)
+                        for url in option['media']['video']:
+                            urls.append(url)
+                else:
+                    # NOTE: main api
                     init_response = self.get(target, store_cookies=True)
                     if init_response.code == 200:
+                        site_id = self.cookie_value('siteId')
+                        localized_api_url = self.localize_api_url(site_id, self.extract_slug(target))
                         self.set_auth_tokens(self.parser.from_json(self.parser.unquote(self.cookie_value('urbn_auth_payload'))))
 
                         self.headers.update(
@@ -87,20 +98,21 @@ class IotaGoblin(MetaGoblin):
                             }
                         )
 
-                        response = self.parser.from_json(self.get(self.API_URL.format(self.extract_product(target))).content)
+                        response = self.parser.from_json(self.get(localized_api_url).content)
 
                         # QUESTION: isinstance checks necessary?
                         if isinstance(response, dict) and response.get('code') == 'EXPIRED_TOKEN':
                             self.logger.log(2, self.NAME, 'reauthorizing')
                             self.reauthorize()
-                            response = self.parser.from_json(self.get(self.API_URL.format(self.extract_product(target))).content)
+                            response = self.parser.from_json(self.get(localized_api_url).content)
 
                         if isinstance(response, list) and 'skuInfo' in response[0]:
                             for slice in response[0]['skuInfo']['primarySlice']['sliceItems']:
-                                url = '_'.join(slice['swatchUrl'].split('_')[:-1])
-
+                                url =  slice["swatchUrl"].rsplit('/', 1)[0]
+                                if not url:
+                                    url = self.BACKUP_URLS[site_id]
                                 for image in slice.get('images', ''):
-                                    urls.append(f'{url}_{image}{self.QUERY}')
+                                    urls.append(f'{url}/{slice["id"]}_{image}{self.QUERY}')
             self.delay()
 
         for url in urls:

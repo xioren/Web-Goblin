@@ -128,7 +128,7 @@ class Parser:
 
     def dequery(self, url):
         '''remove query string from url'''
-        return url.split('?')[0]
+        return url.rsplit('?', 1)[0]
 
     def sanitize(self, url):
         '''combine dequery and descale'''
@@ -308,7 +308,7 @@ class Parser:
             url = url.replace('_s', '').replace('_m', '')
         elif 'pixhost' in url:
             url = re.sub(r't(?![a-z])', 'img', url.replace('thumb', 'image'))
-        elif 'pixroute' in url:
+        elif 'pixroute' in url or 'rackcdn' in url:
             url = url.replace('_t', '')
         elif 'redd.it' in url:
             url = url.replace('preview', 'i')
@@ -317,7 +317,7 @@ class Parser:
         elif 'squarespace' in url:
             url += '?format=original'
         elif 'wix' in url:
-            url = re.sub(r'(?<=\.jpg).+$', '', url)
+            url = re.sub(r'(?<=\.[a-z\d]+).+$', '', url)
 
         if quality:
             url += '?{}'.format(re.sub(r'\d+', '100', quality.group()))

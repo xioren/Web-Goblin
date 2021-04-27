@@ -15,7 +15,7 @@ class HungryGoblin:
 
     def main(self):
         while True:
-            bite = input(f'[{self.NAME}] <feed me> ')
+            bite = input(f'[{self.NAME}] <feed> ')
             if bite == '':
                 break
             self.meal.add(bite)

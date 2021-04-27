@@ -267,7 +267,7 @@ goblins = {
     'trendyol': (r'(trendyol|cdn\.dsmcdn)\.[a-z]+', TrendyolGoblin),
     'triangl': (r'triangl\.[a-z]+', TrianglGoblin),
     'underprotection': (r'underprotection\.[a-z]+', UnderprotectionGoblin),
-    'urbanoutfitters': (r'urbanoutfitters(eu)?(\.[a-z]+|/)', UrbanOutfittersGoblin),
+    'urbanoutfitters': (r'(urbanoutfitters(eu)?(\.[a-z]+|/))|(i\.localised\.com/img/uo)', UrbanOutfittersGoblin),
     'victoriassecret': (r'victoriassecret\.[a-z]+', VictoriasSecretGoblin),
     'vila': (r'vila\.[a-z]+', VilaGoblin),
     'vitamina': (r'vitaminaswim\.[a-z]+', VitaminAGoblin),

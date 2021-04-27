@@ -1,8 +1,6 @@
 # ImageGoblin
 
-#### changelog v0.6.7:
-+ imgur fix and improvements
-+ split readme into readme and guide
+#### changelog v0.6.8:
 + bug fixes
 + miscellaneous code clean up and improvements
 
