@@ -55,7 +55,7 @@ class IotaGoblin(MetaGoblin):
                     urls.append(target.replace('.jpg', '_LARGE.jpg').replace('_THUMB', ''))
                 else:
                     urls.append(target)
-            elif 'scene7' in target or 'images.', in targe:
+            elif 'scene7' in target or 'images.' in targe:
                 # NOTE: main api
                 slug = self.extract_slug(target)
                 url_base = self.extract_base(target)
@@ -98,7 +98,6 @@ class IotaGoblin(MetaGoblin):
 
                         response = self.parser.from_json(self.get(localized_api_url).content)
 
-                        # QUESTION: isinstance checks necessary?
                         if isinstance(response, dict) and response.get('code') == 'EXPIRED_TOKEN':
                             self.logger.log(2, self.NAME, 'reauthorizing')
                             self.reauthorize()
