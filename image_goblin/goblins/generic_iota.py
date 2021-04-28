@@ -66,7 +66,7 @@ class IotaGoblin(MetaGoblin):
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
 
-                if self.is_alt(target):
+                if self.is_alt_api(target):
                     # NOTE: alt api
                     local = self.parser.regex_search('[a-z]+(?=\.urbanoutfitters\.com)', target)
                     slug = self.extract_slug(target)

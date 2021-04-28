@@ -1,43 +1,46 @@
 from meta import MetaGoblin
 
 
-# NOTE: unfinished
-
-
 class DeviantArtGoblin(MetaGoblin):
     '''accepts:
-        - image
+        - image*
         - webpage
     '''
 
     NAME = 'deviant art goblin'
     ID = 'deviantart'
-    URL_PAT = r'(?<=og:image"\scontent=")https?://images-wixmp[^"\s]+'
+    API_URL = 'https://www.deviantart.com/_napi/shared_api/deviation/extended_fetch?deviationid={}&username={}&type={}&include_session=false'
 
     def __init__(self, args):
         super().__init__(args)
 
-    def trim(self, url):
-        '''remove scaling'''
-        return self.parser.regex_sub(r'/v1/[^\?]+(?=\?)', '', url)
+    def parse_url(self, url):
+        '''parse post information from url'''
+        return self.parser.dequery(url).split('/')[-3:]
 
     def main(self):
         self.logger.log(1, self.NAME, 'collecting urls')
-        urls = []
 
         for target in self.args['targets'][self.ID]:
 
-            if '.jpg' in target:
-                urls.append(target)
+            if 'images-wixmp' in target:
+                self.logger.log(2, self.NAME, 'WARNING', 'image urls not fully supported', once=True)
+                self.collect(target)
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()
-                
-                urls.extend(self.parser.extract_by_regex(self.get(target).content, self.URL_PAT))
 
-            self.delay()
+                user, type, deviation = self.parse_url(target)
 
-        for url in urls:
-            self.collect(self.trim(url), filename=self.parser.regex_sub(r'_[a-z\d]+-pre', '', self.parser.extract_filename(url)))
+                response = self.parser.from_json(self.get(self.API_URL.format(deviation.split('-')[-1], user, type)).content)
+
+                if response['deviation']['isDownloadable']:
+                    self.collect(response['deviation']['media']['baseUri'] + '?token=' + response['deviation']['media']['token'][0],
+                                 filename=response['deviation']['media']['prettyName'])
+                else:
+                    self.collect(response['deviation']['media']['baseUri'] + '/'
+                                 + self.parser.regex_sub(r'q_\d+', 'q_100', response['deviation']['media']['types'][-1]['c'])
+                                 + '?token=' + response['deviation']['media']['token'][0],
+                                 filename=response['deviation']['media']['prettyName'])
 
         self.loot()

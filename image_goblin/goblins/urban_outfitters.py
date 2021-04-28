@@ -18,7 +18,7 @@ class UrbanOutfittersGoblin(IotaGoblin):
     def __init__(self, args):
         super().__init__(args)
 
-    def is_alt(self, url):
+    def is_alt_api(self, url):
         for loc in ['au.urbanoutfitters', 'hk.urbanoutfitters', 'sg.urbanoutfitters']:
             if loc in url:
                 return True

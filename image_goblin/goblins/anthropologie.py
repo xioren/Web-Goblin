@@ -21,7 +21,7 @@ class AnthropologieGoblin(IotaGoblin):
     def __init__(self, args):
         super().__init__(args)
 
-    def is_alt(self, url):
+    def is_alt_api(self, url):
         return False
 
     def localize_api_url(self, site_id, slug):
