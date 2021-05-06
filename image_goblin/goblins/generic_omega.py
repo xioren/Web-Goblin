@@ -31,7 +31,7 @@ class OmegaGoblin(MetaGoblin):
         elif self.args['noup']:
             return url
         else:
-            return self.parser.auto_format(url)
+            return self.parser.auto_format(self.parser.sanitize(url))
 
     def find_urls(self, url):
         '''find and collect urls'''

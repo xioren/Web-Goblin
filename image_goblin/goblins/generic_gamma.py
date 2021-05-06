@@ -33,7 +33,7 @@ class GammaGoblin(MetaGoblin):
 
     NAME = 'gamma goblin'
     ID = 'gamma'
-    URL_PAT = r'[^"\s;]+demandware[^"\s;]+\.jpg'
+    URL_PAT = r'https?://[^/]+/([\w\d/]+/)?on/demandware.static/-/[^/]+/[^"]+'
 
     def __init__(self, args):
         super().__init__(args)
@@ -63,9 +63,8 @@ class GammaGoblin(MetaGoblin):
             self.delay()
 
         for url in urls:
-            if not self.parser.regex_search(f'(?:{self.IMG_PAT})', url, capture=False):
+            if not self.parser.regex_search(self.IMG_PAT, url, capture=False):
                 continue
-
             id, url_end = self.extract_parts(self.isolate(url))
             for mod in self.MODIFIERS:
                 self.collect(f'{self.URL_BASE}{id}{mod}{self.parser.dequery(url_end)}{self.QUERY}')

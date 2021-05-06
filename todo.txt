@@ -5,3 +5,5 @@
 - proxy support
 - multi replace function
 - pre-compile all regex patterns?
+- from urllib.parse import parse_qs
+- check and feed urls that have matching goblins back to the dispatcher?

@@ -1,6 +1,9 @@
 from goblins.generic_alpha import AlphaGoblin
 
 
+# NOTE: http://tienda.promise.es/
+
+
 class PromiseGoblin(AlphaGoblin):
 
     NAME = 'promise goblin'

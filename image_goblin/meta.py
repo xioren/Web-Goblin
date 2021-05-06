@@ -317,25 +317,23 @@ class MetaGoblin:
 
     def collect(self, url, filename='', clean=False):
         '''finalize and add urls to the collection'''
-        if self.parser.filter(url):
+        if not self.parser.filter(url):
             # BUG: adding valid url check here rejects relative urls
-            return None
+            if clean:
+                url = self.parser.sanitize(url)
+            if self.args['filename']:
+                filename = self.args['filename']
+            elif not filename:
+                filename = self.parser.extract_filename(url)
+            if self.args['slugify']:
+                filename = self.parser.slugify(filename)
+            ext = self.parser.extension(url)
 
-        if clean:
-            url = self.parser.sanitize(url)
-        if self.args['filename']:
-            filename = self.args['filename']
-        elif not filename:
-            filename = self.parser.extract_filename(url)
-        if self.args['slugify']:
-            filename = self.parser.slugify(filename)
-        ext = self.parser.extension(url)
-
-        # NOTE: add url and filename to collection as hashable string
-        if isinstance(self.collection, list):
-            self.collection.append(f'{self.parser.finalize(url)}-break-{filename}{ext}')
-        else:
-            self.collection.add(f'{self.parser.finalize(url)}-break-{filename}{ext}')
+            # NOTE: add url and filename to collection as hashable string
+            if isinstance(self.collection, list):
+                self.collection.append(f'{self.parser.finalize(url)}-break-{filename}{ext}')
+            else:
+                self.collection.add(f'{self.parser.finalize(url)}-break-{filename}{ext}')
 
     def loot(self, save_loc=None, timeout=0):
         '''retrieve resources from collected urls'''

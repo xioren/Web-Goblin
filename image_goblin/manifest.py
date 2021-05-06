@@ -1,3 +1,4 @@
+from goblins.FiveHundredpx import FiveHundredpxGoblin
 from goblins.adore_me import AdoreMeGoblin
 from goblins.agent_provocateur import AgentProvocateurGoblin
 from goblins.aliexpress import AliExpressGoblin
@@ -113,6 +114,7 @@ from goblins.skatie import SkatieGoblin
 from goblins.skin import SkinGoblin
 from goblins.sommer_swim import SommerSwimGoblin
 from goblins.springfield import SpringfieldGoblin
+from goblins.squarespace import SquarespaceGoblin
 from goblins.ssense import SsenseGoblin
 from goblins.stradivarius import StradivariusGoblin
 from goblins.tally_weijl import TallyWeijlGoblin
@@ -140,6 +142,7 @@ from goblins.zara import ZaraGoblin
 
 
 goblins = {
+    '500px': (r'500px\.[a-z]+', FiveHundredpxGoblin),
     'adoreme': (r'adoreme\.[a-z]+', AdoreMeGoblin),
     'agentprovocateur': (r'agentprovocateur\.[a-z]+', AgentProvocateurGoblin),
     'aliexpress': (r'(aliexpress|alicdn)\.[a-z]+', AliExpressGoblin),
@@ -255,6 +258,7 @@ goblins = {
     'skin': (r'skinworldwide\.[a-z]+', SkinGoblin),
     'sommerswim': (r'sommerswim\.[a-z]+', SommerSwimGoblin),
     'springfield': (r'myspringfield\.[a-z]+', SpringfieldGoblin),
+    'squarespace': (r'squarespace-cdn\.com', SquarespaceGoblin),
     'ssense': (r'ssense(media)?', SsenseGoblin),
     'stradivarius': (r'stradivarius\.[a-z]+', StradivariusGoblin),
     'tallyweijl': (r'tally-weijl\.[a-z]+', TallyWeijlGoblin),

@@ -1,5 +1,6 @@
-import re
 import os
+
+from re import search, IGNORECASE
 
 from logging import Logger
 from parsing import Parser
@@ -17,7 +18,7 @@ class Dispatcher:
     def identify(self, url):
         '''match url to a specific goblin'''
         for goblin in goblins:
-            if re.search(f'(?:{goblins[goblin][0]})', url, re.IGNORECASE):
+            if search(f'(?:{goblins[goblin][0]})', url, IGNORECASE):
                 return goblin
         return 'generic'
 

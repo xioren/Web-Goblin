@@ -285,11 +285,10 @@ class Parser:
     def auto_format(self, url):
         '''attempt to upscale common url formats'''
         quality = re.search(self.QUALITY_PAT, url)
-        url = self.sanitize(url)
 
         if 'acidimg' in url:
             url = url.replace('small', 'big')
-        elif 'i.f1g.fr' in url:
+        elif 'i.f1g.fr' in url and 'orig' not in url:
             url = re.sub(r'madame/', 'madame/orig/', url)
         elif 'imagetwist' in url:
             url = url.replace('/th/', '/i/').replace('.jpg', '.JPG')
@@ -302,7 +301,7 @@ class Parser:
             url = url.replace('.th', '').replace('.md', '')
         elif 'imx.to' in url:
             url = url.replace('/t/', '/i/')
-        elif 'i.mdel.net' in url:
+        elif 'i.mdel.net' in url and '-orig' not in url:
             url = url.replace('.jpg', '-orig.jpg')
         elif 'pimpandhost' in url:
             url = url.replace('_s', '').replace('_m', '')
@@ -314,8 +313,6 @@ class Parser:
             url = url.replace('preview', 'i')
         elif 'cdn.shoplo' in url:
             url = re.sub(r'/th\d+/', '/orig/', url)
-        elif 'squarespace' in url:
-            url += '?format=original'
         elif 'wix' in url:
             url = re.sub(r'(?<=\.[a-z\d]+).+$', '', url)
 

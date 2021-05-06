@@ -1,7 +1,7 @@
 # ImageGoblin
 
-#### changelog v0.6.9:
-+ deviant art improvements
+#### changelog v0.6.10:
++ 500px goblin
 + bug fixes
 + miscellaneous code clean up and improvements
 
