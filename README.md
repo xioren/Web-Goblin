@@ -1,7 +1,6 @@
 # ImageGoblin
 
-#### changelog v0.6.10:
-+ 500px goblin
+#### changelog v0.6.11:
 + bug fixes
 + miscellaneous code clean up and improvements
 

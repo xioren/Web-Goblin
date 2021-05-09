@@ -36,7 +36,8 @@ class VictoriasSecretGoblin(MetaGoblin):
                 self.logger.spin()
 
                 init_response = self.get(target).content
-                api_version = self.parser.regex_search(r'(?<={"version":")v\d+(?="}})', init_response)
+                # TODO: need reliable way to id api version
+                api_version = self.parser.regex_search(r'(?<={"version":")v\d+(?="},)', init_response)
 
                 for path in self.parser.extract_by_regex(init_response, r'(?<="path":")page/[^"]+'):
                     response = self.parser.from_json(self.get(f'{self.API_URL_BASE}/products/{api_version}/{self.parser.dequery(path)}?activeCountry=US').content)

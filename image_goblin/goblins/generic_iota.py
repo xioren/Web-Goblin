@@ -30,7 +30,7 @@ class IotaGoblin(MetaGoblin):
 
     def extract_base(self, url):
         '''extract url base'''
-        return url.rsplit('/', 1)[0]
+        return self.parser.regex_split(r'\d+_\d+_[a-z\d]+', url)[0]
 
     def set_auth_tokens(self, tokens):
         '''extract auth and reauth tokens from response cookie'''
@@ -61,7 +61,7 @@ class IotaGoblin(MetaGoblin):
                 url_base = self.extract_base(target)
 
                 for mod in self.MODIFIERS:
-                    urls.append(f'{url_base}/{slug.rsplit("_", 1)[0]}_{mod}{self.QUERY}')
+                    urls.append(f'{url_base}{slug.rsplit("_", 1)[0]}_{mod}{self.QUERY}')
             else:
                 self.logger.log(2, self.NAME, 'looting', target)
                 self.logger.spin()

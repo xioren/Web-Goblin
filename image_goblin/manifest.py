@@ -1,4 +1,4 @@
-from goblins.FiveHundredpx import FiveHundredpxGoblin
+from goblins.fivehundredpx import FiveHundredpxGoblin
 from goblins.adore_me import AdoreMeGoblin
 from goblins.agent_provocateur import AgentProvocateurGoblin
 from goblins.aliexpress import AliExpressGoblin
